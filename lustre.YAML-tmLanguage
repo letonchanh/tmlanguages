@@ -1,0 +1,164 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+
+# Oniguruma Regular Expressions:
+#   https://sonoisa.github.io/ogrekit/About_(English)_files/RE.txt
+
+# Sublime tuto:
+#   http://sublimetext.info/docs/en/extensibility/syntaxdefs.html
+
+# Prolog example:
+#   https://github.com/alnkpa/sublimeprolog/blob/master/support/Prolog.YAML-tmLanguage
+---
+name: Lustre
+scopeName: source.lus
+fileTypes: [lus]
+uuid: 23a435f9-1904-4b91-99ee-7609e0e45879
+
+patterns:
+- comment: Comments (single line).
+  name: comment.other.lustre
+  match: '\s*--\s+(.*)'
+- comment: Contract annotations.
+  name: keyword.lustre
+  match: '\s*--@(require|ensure)\b'
+- comment: Field annotation.
+  name: keyword.lustre
+  match: '\s*--!(\w+)'
+- comment: Kind annotations.
+  name: keyword.lustre
+  match: '\s*--%(\w+)'
+- include: '#floatCst'
+- include: '#intCst'
+- include: '#boolCst'
+- include: '#types'
+- include: '#stringCst'
+- include: '#nodePref'
+- include: '#nodeRet'
+- include: '#streamDef'
+- include: '#nodeCall'
+- include: '#structConstr'
+- comment: Keywords.
+  name: keyword.lustre
+  match: \b(type|var|let|tel|const|assert|condact|include)\b
+- comment: More keywords.
+  name: keyword.lustre
+  match: '\b(if|then|else|pre|not|and|or|mod)\b|->|\+'
+- comment: Contract definition.
+  name: keyword.lustre
+  begin: '\s*--@contract\s+([a-zA-Z]\w*)\s+'
+  beginCaptures:
+    '1': {name: constant.numeric.lustre}
+  end: ';'
+- comment: Comments (single line).
+  name: comment.lustre
+  match: '\s*--.*'
+- comment: Comments (multiline).
+  name: comment.block.lustre
+  begin: \(\*
+  end: \*\)
+  captures:
+    '0': {name: punctuation.definition.comment.lustre}
+
+
+repository:
+
+  intCst:
+    name: constant.other.lustre
+    match: \b(0|[1-9][0-9]*)\b
+
+  floatCst:
+    name: constant.other.lustre
+    match: \b([0-9]+\.[0-9]*)\b
+
+  boolCst:
+    name: constant.other.lustre
+    match: \b(true|false)\b
+
+  stringCst:
+    name: constant.other.lustre
+    match: \"[^\"]*\"
+
+  betterTypes:
+    patterns:
+    - comment: Primitive types.
+      name: support.type.lustre
+      match: '\b(bool|int|real)\b'
+    - comment: Subranges.
+      name: constant.numeric.lustre
+      begin: '\b(subrange)\s*\['
+      beginCaptures:
+        '1': {name: support.type.lustre}
+      end: '\]'
+      patterns:
+        - include: '#intCst'
+    - comment: Tuples.
+      begin: '(\[)'
+      beginCaptures:
+        '2': {name: constant.numeric.lustre}
+      end: '\]'
+      endCaptures:
+        '0': {name: constant.numeric.lustre}
+      patterns:
+        - include: '#betterTypes'
+    - comment: Arrays.
+      name: support.type.lustre
+      match: '([a-zA-Z]\w*)?(\^)([a-zA-Z]\w*|[1-9]\d*)'
+      captures:
+        '2': {name: constant.numeric.lustre}
+
+  types:
+    comment: 'Used outside of node signatures:
+      in local variables and struct definitions'
+    begin: ':'
+    end: ';'
+    patterns:
+      - include: '#betterTypes'
+
+  ident:
+    match: '\b([a-zA-Z][a-zA-Z0-9_]*)\b'
+
+  ident_c:
+    name: constant.language.source.lustre
+    patterns:
+      - include: '#ident'
+
+  streamDef:
+    comment: This is kind of ugly, but supporting arrays is tedious so...
+    match: '(const|--@var|--@const|type|^)\s*([a-zA-Z][^=]*)\s*='
+    captures:
+      '1': {name: keyword.lustre}
+      '2': {name: constant.numeric.lustre}
+
+  nodeCall:
+    match: '([a-zA-Z]\w*)\s*\('
+    captures:
+      '1': {name: constant.other.lustre}
+
+  structConstr:
+    match: '([a-zA-Z]\w*)\s*{'
+    captures:
+      '1': {name: constant.other.lustre}
+
+  constKey:
+    name: keyword.lustre
+    match: '\bconst\b'
+
+  nodePref:
+    begin: '^\s*(node)\s+([a-zA-Z]\w*)\s*\('
+    beginCaptures:
+      '1': {name: keyword.operator.lustre}
+      '2': {name: constant.language.source.lustre}
+    end: '\)'
+    patterns:
+      - include: '#betterTypes'
+      - include: '#constKey'
+
+  nodeRet:
+    begin: '(returns)'
+    beginCaptures:
+      '1': {name: keyword.operator.lustre}
+    end: '\)'
+    patterns:
+      - include: '#betterTypes'
+
+...
