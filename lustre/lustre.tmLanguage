@@ -360,7 +360,7 @@
 			<key>comment</key>
 			<string>This is kind of ugly, but supporting arrays is tedious so...</string>
 			<key>match</key>
-			<string>(const|--@var|--@const|type|^)\s*([a-zA-Z][^=]*)\s*=</string>
+			<string>(const|--@var|--@const|type|^)\s*([a-zA-Z][^=\s]*)\s*=</string>
 		</dict>
 		<key>stringCst</key>
 		<dict>
