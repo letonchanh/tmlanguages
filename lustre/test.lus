@@ -1,0 +1,145 @@
+-- Complete version of the TCM model 
+
+
+include "helpers.lus"
+
+include "math_utils.lus"
+include "mode_control.lus"
+include "longitudinal_control.lus"
+include "latitudinal_control.lus"
+include "autothrottle.lus"
+
+const observer_init = 1 ;
+
+(* bla bla bla *)
+-- bli blu blo
+
+node observer (
+  HeadMode, ailStick, elevStick, AltMode, FPAMode, ATMode_Out1_61,
+  AltCmd_Out1_71, Altitude_Out1_81, CAS_Out1_91, CASCmdMCP_Out1_101, AltCmd,
+  Altitude, gskts, hdot, hdot_change_rate, gamcmd_Out1_25, gamma_Out1_35,
+  thetadeg_Out1_45, VT_Out1_55 : real ;
+  bla: subrange[0, 10] ;
+) returns (
+  altgammaCmd, fpain, tempAlt, tempFPA : real;
+  HeadEng, AltEng, FPAEng : bool;
+  AltEng_r, FPAEng_r : real;
+  ATEng : bool;
+  CasCmd, PitchCmd: real ;
+  prePitch : real ;
+) ;
+
+--@contract init ;
+--@require before_lt(observer_init) ;
+--@ensure true ;
+
+--@contract guide_100 ;
+--@require after_ge(observer_init) ;
+--@require ATMode_Out1_61 <> 0.0 ;
+--@require false -> pre ATMode_Out1_61 <> 0.0 ;
+--@require FPAMode = 0.0 ;
+--@ensure CASCmdMCP_Out1_101 = CAS_Out1_91 ;
+--@ensure CASCmdMCP_Out1_101 = CasCmd ;
+
+--@contract guide_120_130 ;
+--@require after_ge(observer_init) ;
+--@require AltMode = 0.0 ;
+--@require FPAMode <> 0.0 ;
+--@require elevStick = 0.0 ;
+--@require ailStick = 0.0 ;
+--@require VT_Out1_55 = 100.0 ;
+-- hassumption from FPA
+--@require (gamma_Out1_35 = (5.0 -> pre PitchCmd) / 1.400000) ;
+-- --@require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
+-- --@require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
+--@ensure true -> (
+  ( gamcmd_Out1_25 = gamma_Out1_35 ) or (
+    ( gamcmd_Out1_25 > gamma_Out1_35  ) and
+    ( PitchCmd > pre ( prePitch )  )
+  ) or (
+    ( gamcmd_Out1_25 < gamma_Out1_35  ) and
+    ( PitchCmd < pre ( prePitch )  )
+  )
+) ;
+
+let
+
+  HeadEng, AltEng, FPAEng, ATEng, CasCmd = AutoPilot(
+    HeadMode, ailStick, elevStick, AltMode, FPAMode, ATMode_Out1_61,
+    AltCmd_Out1_71, Altitude_Out1_81, CAS_Out1_91, CASCmdMCP_Out1_101
+  );
+
+  AltEng_r = if AltEng then 10.0 else 0.0 ;
+  FPAEng_r = if FPAEng then 10.0 else 0.0 ;
+     
+  altgammaCmd = AltitudeControl(
+    AltEng_r, AltCmd,  Altitude, gskts, hdot, hdot_change_rate
+  );
+  
+  fpain = altgammaCmd + gamcmd_Out1_25;
+
+  PitchCmd = FPAControl(
+    FPAEng_r, fpain, gamma_Out1_35, thetadeg_Out1_45, VT_Out1_55
+  );
+
+  prePitch = 5.0 -> pre PitchCmd ;
+
+  --!MAIN : true;
+
+tel
+
+type rational = { n: int; d: int };
+
+const C1 = [1, 2, 3];
+const C2 = 1^3;
+-- const C3[i] : int^3 = i;
+
+node X(s: int; const array_size: int) returns (A8: int^2);
+const array_default = 0;
+var 
+  A1, A2, A7: int^array_size;
+  A3, A4: int^array_size^array_size;
+  A5: [int, bool]^array_size;
+  A6: rational^array_size;
+  A9, A10: int^3;
+  i: real;
+  j: bool;
+
+let
+
+  -- These identifiers are hidden in the array definitions
+  i = 0.0;
+  j = true;
+  
+  -- A sliding window over input stream s
+  A2[k] = if k = 0 then s else (k -> pre A1[k-1]);
+  
+  -- A pointwise definition of an array
+  A1[i] = array_default;
+
+  -- A multi-dimensional array
+  A3[i][j] = s;
+  
+  -- A multi-dimensional array, the second i masks the first 
+  A4[i][i] = i;
+  
+  -- Structural assignment involving recursive array definition
+  -- (i, A1[i]) = (0, s);
+
+  -- Array of tuples 
+  A5[i] = { i, i mod 2 = 0 };
+
+  -- Array of records
+  A6[i] = rational { n=i; d=i+1 };
+
+  -- Temporal operator applied to running variable: legal?
+  A7[i] = 0 -> pre i;
+
+  -- Return an array from a node call
+  A8[i] = 0;
+
+  -- A9[i] = C1[i] -> pre A9[i] + 1;
+
+  -- A10[i] = C2[i] -> pre A10[i] + 1;
+
+tel
