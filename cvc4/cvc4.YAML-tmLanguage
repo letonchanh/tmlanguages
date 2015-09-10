@@ -1,0 +1,486 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+
+# Oniguruma Regular Expressions:
+#   https://sonoisa.github.io/ogrekit/About_(English)_files/RE.txt
+
+# Sublime tuto:
+#   http://sublimetext.info/docs/en/extensibility/syntaxdefs.html
+
+# Prolog example:
+#   https://github.com/alnkpa/sublimeprolog/blob/master/support/Prolog.YAML-tmLanguage
+
+# Scopes:
+# - keyword
+# - comment
+# - constant.other
+# - constant.numeric
+# - support.type
+
+---
+name: CVC4
+# From
+# http://cvc4.cs.nyu.edu/wiki/CVC4's_native_language#CVC4_native_input_language
+scopeName: cvc4
+fileTypes: [cvc4]
+uuid: 78cd77a2-17ef-40e5-a0fb-416644265f70
+
+patterns:
+- include: '#comment'
+- include: '#command'
+- include: '#type_decl'
+- include: '#type_def'
+- include: '#datatype_def'
+- include: '#symbol_def_or_decl'
+
+
+repository:
+
+  # |===| Helpers
+
+  integer:
+    name: constant.other.cvc4
+    match: '\b(0|[1-9][0-9]*)\b'
+
+  identifier:
+    match: '\b[a-zA-Z]\w*\b'
+
+  identifier_colored:
+    name: constant.numeric.cvc4
+    match: '\b[a-zA-Z]\w*\b'
+
+  identifier_colored_colon:
+    match: '\b([a-zA-Z]\w*)\s*:'
+    captures:
+      '1': {name: constant.numeric.cvc4}
+
+  identifier_colored_equal:
+    match: '\b([a-zA-Z]\w*)\s*='
+    captures:
+      '1': {name: constant.numeric.cvc4}
+
+  identifiers_colored_colon:
+    comment: Starts a symbol definition / declaration or a lambda signature.
+    begin: '\b([a-zA-Z]\w*)\b'
+    beginCaptures:
+      '1': {name: constant.numeric.cvc4}
+    end: ':'
+    patterns:
+    - include: '#identifier_colored'
+
+
+  user_type:
+    match: '\b[a-zA-Z]\w*\b'
+
+  user_type_colored:
+    name: support.type.cvc4
+    match: '\b[a-zA-Z]\w*\b'
+
+  semicolon_fail:
+    name: invalid.cvc4
+    match: ';'
+
+  equal_fail:
+    name: invalid.cvc4
+    match: '='
+
+  # |===| Actual definitions.
+
+  comment:
+    name: comment.cvc4
+    match: '%.*'
+
+  type_sub:
+    comment: Actual types. User types appearing in parametric types are not
+             colored.
+    patterns:
+    - comment: Primitive types.
+      name: support.type.cvc4
+      match: '\b(BOOLEAN|REAL|INT)\b'
+
+    - comment: Bitvectors.
+      name: support.type.cvc4
+      begin: '\bBITVECTOR\s*\('
+      end: '\)'
+      patterns:
+      - include: '#integer'
+      - comment: Anything else is invalid.
+        name: invalid.cvc4
+        match: '[^\s\)]+'
+
+    - comment: Arrays.
+      begin: '\bARRAY\b'
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '\bOF\b'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - include: '#type_sub'
+
+    - comment: Parametric types.
+      begin: '\b([a-zA-Z]\w*)\s*(\[)'
+      beginCaptures:
+        '1': {name: support.type}
+        '2': {name: keyword.cvc4}
+      end: '(\])'
+      endCaptures:
+        '1': {name: keyword.cvc4}
+      patterns:
+      - include: '#type_sub'
+
+    - comment: Records.
+      begin: '\[#'
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '#\]'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - name: keyword.cvc4
+        match: ','
+      - include: '#identifier_colored_colon'
+      - include: '#type_sub'
+      - include: '#user_type'
+
+    - comment: Tuples.
+      begin: '\['
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '\]'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - name: keyword.cvc4
+        match: ','
+      - include: '#type_sub'
+      - include: '#user_type'
+
+    - comment: _ -> _ functions, coloring only arrow.
+               No begin, no end. Can't do better without tedious repetitions.
+      name: keyword.cvc4
+      match: '\->'
+
+    - comment: (_, _ [, _]*) -> _ functions, lhs part.
+               Also accepts (SomeType).
+      begin: '\('
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '\)'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - include: '#type_sub'
+      - include: '#user_type'
+      - name: keyword.cvc4
+        match: ','
+
+  type:
+    comment: Color user types only at top level.
+    patterns:
+    - include: '#type_sub'
+    - include: '#user_type_colored'
+
+
+  type_decl:
+    comment: User-defined basic types.
+    match: '([a-zA-Z]\w*)(\s*(,)\s*([a-zA-Z]\w*))*\s*:\s*(TYPE)\s*;'
+    captures:
+      '1': {name: support.type.cvc4}
+      '3': {name: keyword.cvc4}
+      '4': {name: support.type.cvc4}
+      '5': {name: keyword.cvc4}
+
+  type_def:
+    comment: Type definitions.
+    begin: '([a-zA-Z]\w*)\s*:\s*(TYPE)\s*='
+    beginCaptures:
+      '1': {name: support.type.cvc4}
+      '2': {name: keyword.cvc4}
+    end: ';'
+    patterns:
+    - include: '#type'
+    - include: '#equal_fail'
+    - include: '#semicolon_fail'
+
+
+  datatype_def_cij:
+    patterns:
+    - comment: Constructor.
+      begin: '\b([a-zA-Z]\w*)\s*\('
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: '\)'
+      endCaptures:
+        '0': {name: constant.other.cvc4}
+      patterns:
+      - include: '#identifier_colored_colon'
+      - include: '#type'
+      - name: keyword.cvc4
+        match: ','
+    - comment: Constant symbol.
+      name: constant.other.cvc4
+      match: '\b[a-zA-Z]\w*\b'
+
+
+  datatype_def:
+    begin: '\b(DATATYPE)\b'
+    beginCaptures:
+      '1': {name: keyword.cvc4}
+    comment: The last line can end with a ','. So we match for an optional
+             'END'.
+    end: '(END)?;'
+    endCaptures:
+      '1': {name: keyword.cvc4}
+    patterns:
+    - comment: A declaration finishes either by ',' or 'END'.
+      begin: '\b([a-zA-Z]\w*)\s*((\[)\s*([a-zA-Z]\w*)(\s*(,)\s*([a-zA-Z]\w*))*\s*(\]))?\s*='
+      beginCaptures:
+        '1': {name: support.type.cvc4}
+        '2': {name: keyword.cvc4}
+        # '3': {name: keyword.cvc4}
+        # '4': {name: constant.numeric.cvc4}
+        # '6': {name: keyword.cvc4}
+        # '7': {name: constant.numeric.cvc4}
+        # '8': {name: keyword.cvc4}
+      # Reluctant match so that regex does not wait for ',' when it sees 'END'.
+      end: '(,|(END)){1,1}?'
+      endCaptures:
+        '2': {name: keyword.cvc4}
+      patterns:
+      - include: '#datatype_def_cij'
+
+
+
+
+
+
+  symbol_def_or_decl:
+    begin: '\b(([a-zA-Z]\w*)(\s*,\s*[a-zA-Z]\w*)*)\s*:'
+    beginCaptures:
+      '1': {name: constant.numeric.cvc4}
+    end: ';'
+    patterns:
+    - include: '#symbol_def_or_decl_type'
+    - include: '#symbol_def_expr_end'
+    - include: '#identifier_colored'
+
+  symbol_def_or_decl_type:
+    begin: '(?<=:)'
+    end: '(=|(?=;)){1,1}?'
+    patterns:
+    - include: '#type'
+
+  symbol_def_expr_end:
+    begin: '(?<==)'
+    end: '(?=;)'
+    patterns:
+    - include: '#expr'
+
+
+
+  arith_consts:
+    patterns:
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)(\.\d*)\s*/\s*[1-9]\d*(\.\d*)'
+      captures:
+        '2': {name: invalid.cvc4}
+        '3': {name: invalid.cvc4}
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)\s*/\s*[1-9]\d*(\.\d*)'
+      captures:
+        '2': {name: invalid.cvc4}
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)(\.\d*)\s*/\s*[1-9]\d*'
+      captures:
+        '2': {name: invalid.cvc4}
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)\s*(/\s*0(\.0*)?)\b'
+      captures:
+        '2': {name: invalid.cvc4}
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)\s*/\s*[1-9]\d*\b'
+    - name: constant.other.cvc4
+      match: '\b(0|[1-9]\d*)(\.\d*|\b)'
+
+
+
+  expr:
+    comment: A lambda or something else.
+    patterns:
+    - comment: Actually, just the signature of a lambda.
+      begin: '\bLAMBDA\s*\('
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '\)\s*:'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - begin: '(?<=:)'
+        beginCaptures:
+          '0': {name: constant.other.cvc4}
+        end: ',|(?=\))'
+        endCaptures:
+          '0': {name: constant.other.cvc4}
+        patterns:
+        - include: '#type'
+      - include: '#identifiers_colored_colon'
+    - include: '#expr_sub'
+
+
+  expr_sub:
+    comment: Anything but a lambda.
+    patterns:
+
+    - include: '#arith_consts'
+
+    - comment: Common operators.
+      name: keyword.cvc4
+      match: '\b(AND|OR|NOT|IF|THEN|ELSE|ELSIF|ENDIF)\b|:='
+
+    - comment: Let binding.
+      begin: '\bLET\b'
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '\bIN\b'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - include: '#identifier_colored_equal'
+      - include: '#expr_sub'
+
+    - comment: Forall / exists.
+      begin: '\b(FORALL|EXISTS)\s*\('
+      beginCaptures:
+        '1': {name: keyword.cvc4}
+      end: '\)'
+      patterns:
+      - begin: '(?<=:)'
+        beginCaptures:
+          '0': {name: constant.other.cvc4}
+        end: ',|(?=\))'
+        endCaptures:
+          '0': {name: constant.other.cvc4}
+        patterns:
+        - include: '#type'
+      - include: '#identifiers_colored_colon'
+
+    - comment: Instantiation patterns.
+      begin: '\bPATTERN\b'
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: ':'
+      patterns:
+      - include: '#expr_sub'
+
+    - comment: Function application.
+      begin: '\b([a-zA-Z]\w*)\s*\('
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: '\)'
+      endCaptures:
+        '0': {name: constant.other.cvc4}
+      patterns:
+      - include: '#identifier_colored_colon'
+      - include: '#expr_sub'
+      - name: keyword.cvc4
+        match: ','
+
+    - comment: Update.
+      name: constant.other.cvc4
+      match: '\bWITH\b'
+
+    - comment: Other parts of an update.
+      begin: '\['
+      beginCaptures:
+        '0': {name: constant.numeric.cvc4}
+      end: '\]'
+      endCaptures:
+        '0': {name: constant.numeric.cvc4}
+      patterns:
+      - include: '#expr_sub'
+
+    - comment: Selection.
+      begin: '\b([a-zA-Z]\w*)\s*(\[)'
+      beginCaptures:
+        '2': {name: constant.numeric.cvc4}
+      end: '\]'
+      endCaptures:
+        '0': {name: constant.numeric.cvc4}
+      patterns:
+      - include: '#identifier_colored_colon'
+      - include: '#expr_sub'
+      - name: keyword.cvc4
+        match: ','
+
+    - comment: Record construction.
+      begin: '\(#'
+      beginCaptures:
+        '0': {name: keyword.cvc4}
+      end: '#\)'
+      endCaptures:
+        '0': {name: keyword.cvc4}
+      patterns:
+      - include: '#identifier_colored_colon'
+      - include: '#expr_sub'
+
+    - comment: Record selection.
+      name: constant.numeric.cvc4
+      match: '\.'
+
+    - begin: '\('
+      end: '\)'
+      patterns:
+      - include: '#expr_sub'
+
+    - include: '#identifier'
+
+    - match: ','
+
+
+
+
+
+
+
+  command:
+    patterns:
+    - comment: Commands with no arguments.
+      begin: '\b(CONTINUE|COUNTEREXAMPLE|COUNTERMODEL|POP|PUSH|WHERE)\b'
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: ';'
+    - begin: '\bOPTION\b'
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: ';'
+      patterns:
+      - name: constant.numeric.cvc4
+        begin: '"'
+        end: '"'
+      - include: '#integer'
+    - begin: '\b(ECHO|INCLUDE|TRACE|UNTRACE)\b'
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: ';'
+      patterns:
+      - name: constant.numeric.cvc4
+        begin: '"'
+        end: '"'
+    - begin: '\bPOPTO\b'
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: ';'
+      patterns:
+      - include: '#integer'
+    - begin: '\b(ASSERT|QUERY|RESTART|PRINT|TRANSFORM)\b'
+      beginCaptures:
+        '0': {name: constant.other.cvc4}
+      end: ';'
+      patterns:
+      - include: '#expr'
+
+
+
+
+
+...

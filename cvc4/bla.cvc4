@@ -1,0 +1,408 @@
+%%% bla bla
+
+MyType1 : TYPE = BOOLEAN ;
+
+MyType2 : TYPE = REAL ;
+
+MyType3 : TYPE = INT -> REAL ;
+
+MyType4 : TYPE = BITVECTOR(9) ;
+
+MyType5 : TYPE = ARRAY INT OF REAL ;
+
+MyType6 : TYPE = ARRAY String OF [REAL, MyType] ;
+
+MyType7 : TYPE = [#
+  bla: BOOLEAN,
+  bli: [
+    INT, ARRAY String OF [REAL, MyType]
+  ],
+  blu: ARRAY INT OF REAL
+#] ;
+
+MyType1 : TYPE = ARRAY [REAL, INT] OF BITVECTOR(9) ;
+
+
+DATATYPE
+  List[X] = nil | cons(head: X, tail: List),
+  Tree = tree (value: BITVECTOR(7), children: List[Tree]),
+  TreeList = nil_tl
+           | ins_tl (first_t1: [Tree, INT], rest_t1: TreeList),
+  Pair[X, Y] = pair (first: X, second: Y)
+END ;
+
+MyType1 : TYPE = ARRAY [REAL, INT] OF BITVECTOR(9) ;
+
+% Boolean constants
+a, b: BOOLEAN;
+
+% REAL constants
+x,y: REAL;
+
+% Boolean-valued function, can be used as a predicate symbol
+p: REAL -> BOOLEAN;
+ASSERT  a => p(x - y);
+
+% Real-valued function with Boolean argument
+f: BOOLEAN -> REAL;
+
+% The argument of f can be a formula ...
+ASSERT f(a OR b) > 0.3  OR  p(x);
+
+% ... even a quantified one
+ASSERT y = f(FORALL (r: REAL): r < r + 1);
+
+% Function type declarations
+
+UnaryFunType: TYPE = INT -> REAL;
+
+BinaryFunType: TYPE = (REAL, REAL) -> ARRAY REAL OF REAL;
+
+TernaryFunType: TYPE = (REAL, BITVECTOR(4), INT) -> BOOLEAN;
+
+x, y : REAL;
+QUERY (( x <= y ) AND ( y <= x )) => ( x = y );
+
+x, y : INT;
+QUERY ((2 * x + 4 * y <= 1) AND ( y >= x)) => (x <= 0);
+z : REAL;
+QUERY (2 * x + z <= 3.5) AND (z >= 1);
+
+% User declarations of basic types:
+
+MyBrandNewType: TYPE;
+
+Apples, Oranges: TYPE;
+
+
+I : TYPE;
+
+%% Array types:
+
+% Arrays with indices from I and values from REAL
+Array1: TYPE = ARRAY I OF REAL;
+
+% Arrays with integer indices and array values 
+Array2: TYPE = ARRAY INT OF (ARRAY INT OF REAL) ;
+
+% Arrays with integer pair indices and integer values
+IntMatrix: TYPE = ARRAY [INT, INT] OF INT;
+
+IntArray: TYPE = ARRAY INT OF INT;
+
+% Tuple type declarations
+
+EmptyTupleType: TYPE = []; % this is a unit type
+
+RealPair: TYPE = [REAL, REAL];
+
+MyTuple: TYPE = [ REAL, IntArray, [INT, INT] ];
+
+
+
+MyType: TYPE;
+
+% Record declaration
+
+RecordType: TYPE = [# id: REAL, age: INT, info: MyType #];
+
+
+
+
+% simple enumeration type
+
+% implicitly defined are the testers: is_red, is_yellow and is_blue
+% (similarly for the other data types)
+
+DATATYPE
+  PrimaryColor = red | yellow | blue
+END;
+
+
+% infinite set of pairwise distinct values ..., v(-1), v(0), v(1), ...
+
+DATATYPE
+  Id = v (id: INT)
+END;
+
+
+% ML-style integer lists
+
+DATATYPE
+  IntList = nil | ins (head: INT, tail: IntList)
+END;
+
+
+% AST for lamba calculus
+
+DATATYPE
+  Term = var (index: INT)
+       | apply (arg_1: Term, arg_2: Term)
+       | lambda (arg: INT, body: Term)
+END;
+
+
+% Trees
+
+DATATYPE
+  Tree = tree (value: REAL, children: TreeList),
+  TreeList = nil_tl
+           | ins_tl (first_t1: Tree, rest_t1: TreeList)
+END;
+
+
+
+
+
+
+
+% Parametric pairs
+DATATYPE
+  Pair[X, Y] = pair (first: X, second: Y)
+END;
+
+% Parametric lists
+
+DATATYPE
+  List[X] = nil | cons (head: X, tail: List[X])
+END;
+
+
+% Parametric trees using the list type above
+
+DATATYPE
+  Tree[X] = node (value: X, children: List[Tree[X]]),
+END;
+
+
+% Function type declarations
+
+UnaryFunType: TYPE = INT -> REAL;
+
+BinaryFunType: TYPE = (REAL, REAL) -> ARRAY REAL OF REAL;
+
+TernaryFunType: TYPE = (REAL, BITVECTOR(4), INT) -> BOOLEAN;
+
+
+
+name : TYPE = E;
+
+
+
+DATATYPE [X]
+  List[X] = nil | cons (head: X, tail: List[X])
+END;
+
+ASSERT y = cons(1, nil::List[REAL]);
+
+DATATYPE [X, Y]
+  Union[X, Y] = left(val_l: X) | right(val_r: Y)
+END;
+
+ASSERT y = left::Union[BOOLEAN, REAL](TRUE);
+
+
+
+
+
+% integer constants
+
+a, b, c: INT;
+a, b, c, d, e: INT;
+
+% real constants
+
+x, y, z: REAL;
+
+% unary function
+
+f1: REAL -> REAL;
+
+% binary function
+
+f2: (REAL, INT) -> REAL;
+
+% unary function with a tuple argument
+
+f3: [INT, REAL] -> BOOLEAN;
+
+% binary predicate
+
+p: (INT, REAL) -> BOOLEAN;
+
+% Propositional "variables"
+
+P, Q: BOOLEAN;
+
+
+
+c: INT;
+
+i: INT = 5 + 3*c;  % i is effectively a shorthand for 5 + 3*c
+
+j: REAL = 3/4;
+
+t: [REAL, INT] = (2/3, -4);
+
+r: [# key: INT, value: REAL #] = (# key := 4, value := (c + 1)/2 #);
+
+f: BOOLEAN = FORALL (x:INT): x <= 0 OR x > c ;
+
+
+
+% Global declaration of x as a unary function symbol
+
+x: REAL -> REAL;
+
+% Local declarations of x as variable (hiding the global one)
+
+f: REAL -> REAL = LAMBDA (x,y: REAL): 2*x + 3;
+
+p: (INT, INT) -> BOOLEAN = LAMBDA (x,i: INT): i*x - 1 > 0;
+
+g: (REAL, INT) -> [REAL, INT] = LAMBDA (x: REAL, i:INT): (x + 1, i - 3);
+
+
+t: REAL =
+  LET x1 = 42,
+      g = LAMBDA(x:INT): x + 1,
+      x2 = 2*x1 + 7/2
+  IN
+     (LET x3 = g(x1) IN x3 + x2) / x1;
+
+
+
+A, B: TYPE;
+
+q: BOOLEAN = FORALL (x,y: A, i,j,k: B): 
+               i = j AND i /= k => EXISTS (z: A): x /= z OR z /= y;
+
+
+
+
+A: TYPE;
+i, j: INT;
+
+% The first occurrence of i and of j in f are constant symbols,
+% the others are variables.
+
+f: BOOLEAN =  i = j AND FORALL (i,j: A): i = j OR i /= j;
+
+
+
+A: TYPE;
+b, c: A;
+p, q: A -> BOOLEAN;
+r: (A, A) -> BOOLEAN;
+
+ASSERT FORALL (x0, x1, x2: A):
+         PATTERN (r(x0, x1), r(x1, x2)): 
+         (r(x0, x1) AND r(x1, x2)) => r(x0, x2) ;
+
+ASSERT FORALL (x: A):
+         PATTERN (r(x, b)): 
+         PATTERN (r(x, c)): 
+         p(x) => q(x) ;
+
+ASSERT EXISTS (y: A):
+         FORALL (x: A):
+           PATTERN (r(x, y), p(y)): 
+           r(x, y) => q(x) ;
+
+
+
+
+
+% Conditional term
+x, y, z, w: REAL;
+
+t: REAL = 
+  IF x > 0 THEN y
+  ELSIF x >= 1 / 0 THEN z
+  ELSIF x > 2 THEN w
+  ELSE 2/3 ENDIF;
+
+
+x: REAL = 0 + 0.7 + 97. + 42./9 + 5/7. + 1./7. + 33/25 + 13 / 7 + 7 / 0.00 ;
+
+% Yeah.
+
+
+
+A: TYPE = ARRAY INT OF REAL;
+a: A;
+i: INT = 4;
+
+% selection:
+
+elem: REAL = a[i];
+
+% update
+
+a1: A = a WITH [10] := 1/2;
+
+% sequential update 
+% (syntactic sugar for (a WITH [10] := 2/3) WITH [42] := 3/2)
+
+a2: A = a WITH [10] := 2/3, [42] := 3/2;
+
+
+
+
+
+% Record construction and field selection
+Item: TYPE = [# key: INT, weight: REAL #];
+
+x: Item = (# key := 23, weight := 43/10 #);
+k: INT = x.key;
+v: REAL = x.weight;
+
+% Tuple construction and projection
+y: [REAL, INT, REAL] = ( 4/5, 9, 11/9 );
+first_elem: REAL = y.0;
+third_elem: REAL = y.2;
+
+
+
+
+% Record updates
+
+Item: TYPE = [# key: INT, weight: REAL #];
+
+x:  Item = (# key := 23, weight := 43/10 #);
+
+x1: Item = x WITH .weight := 48;
+
+% Tuple updates
+
+Tup: TYPE = [REAL,INT,REAL];
+y:  Tup = ( 4/5, 9, 11/9 );
+y1: Tup = y WITH .1 := 3; 
+
+% Updates to a nested component can be combined in a single WITH operator:
+
+Cache: TYPE = ARRAY [0..100] OF [# addr: INT, data: REAL #];
+State: TYPE = [# pc: INT, cache: Cache #];
+
+s0: State;
+s1: State = s0 WITH .cache[10].data := 2/3;
+
+
+
+% Record updates
+
+Item: TYPE = [# key: INT, weight: REAL #];
+
+x:  Item = (# key := 23, weight := 43/10 #);
+
+x1: Item = (# key := x.key,  weight := 48 #);
+
+% Tuple updates
+
+Tup: TYPE = [REAL,INT,REAL];
+y:  Tup = ( 4/5, 9, 11/9 );
+y1: Tup = ( y.0, 3, y.1 );
+
+
+
+OPTION "blabla bla" 42 ;
