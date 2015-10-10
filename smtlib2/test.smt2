@@ -1,4 +1,6 @@
-(declare-fun
+; A comment.
+
+(declare-fun (Int Bool Real) Real (
 
 ; constants
 123
@@ -28,7 +30,6 @@ $a
 f1851@-1
 
 ; quoted idents
-|bli lba sntah,.sntphsaotem \ stnheusincfoeurigcd snt,.sntph |
 |bli lba sntah,.sntphsaotem stnheusincfoeurigcd snt,.sntph |
 
 (and bli (< (+ 1 bla) (* 7 2)))
@@ -37,11 +38,7 @@ f1851@-1
 
 ; indexing
 (_ | sathoel)+f{}p +* aoeus| 7 8 7 7 7 7 7 7 7 7 7 7 7 )
-(_ aoeus 7.0 8 7)
-(_ | sathoel)+f{}p \ +* aoeus| 9.2)
-(_ 7 3 bli blu)
 (_ |bla| 7)
-(_ bla )
 
 ; s-exprs:
 (bli 7 3 _t true (bli 2 |bla  blu |))
@@ -54,13 +51,27 @@ f1851@-1
 
 (let ( (blu Int) (bli (List (_ |My sort kicks ass| 7) Bli)) ) (= blu 3))
 
-)
+) )
 
 (set-logic bla)
 
 (assert
   (and
     (let ( (blu Int) (bli (List (_ |My sort kicks ass| 7) Bli)) ) (= blu 3))
+    (_blalstahsthaoercehu 7 3)
     true
   )
 )
+
+
+(declare-fun bsu () Int (
+
+; Failures.
+|bli lba sntah,.sntphsaotem \ stnheusincfoeurigcd snt,.sntph |
+(_ aoeus 7.0 8 7)
+(_ | sathoel)+f{}p \ +* aoeus| 9.2)
+(_ 7 3 bli blu)
+(_ bla )
+(_ aoeus 7.0 8 7)
+
+))

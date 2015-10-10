@@ -33,7 +33,7 @@ repository:
 
   comments:
     name: comment.smt2
-    match: '^\s*;.*'
+    match: ';.*$'
 
   reserved:
     name: 'constant.numeric.other.smt2'
@@ -116,7 +116,7 @@ repository:
 
   indexed:
     comment: Indexing on quoted.
-    begin: '(\()\s*(_)'
+    begin: '(\()\s*(_)\b'
     beginCaptures:
       '1': {name: keyword.smt2}
       '2': {name: constant.numeric.smt2}
@@ -153,6 +153,7 @@ repository:
     - begin: '\('
       end: '\)'
       patterns:
+      - include: '#comments'
       - include: '#reserved'
       - include: '#terms'
       - comment: For annotations.
@@ -173,6 +174,7 @@ repository:
       patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
+      - include: '#comments'
     - begin: '(\()\s*(set-option)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -183,6 +185,7 @@ repository:
       patterns:
       - include: '#keywords'
       - include: '#terms'
+      - include: '#comments'
     - begin: '(\()\s*(set-info)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -191,7 +194,7 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
-      - include: '#'
+      - include: '#comments'
     - begin: '(\()\s*(declare-sort)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -200,6 +203,7 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
+      - include: '#comments'
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
       - include: '#numerals'
@@ -211,6 +215,7 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
+      - include: '#comments'
       - include: '#terms'
     - begin: '(\()\s*(declare-fun)'
       beginCaptures:
@@ -220,6 +225,7 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
+      - include: '#comments'
       - include: '#terms'
     - begin: '(\()\s*(define-fun)'
       beginCaptures:
@@ -230,6 +236,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#terms'
+      - include: '#comments'
     - begin: '(\()\s*(push)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -239,6 +246,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#numerals'
+      - include: '#comments'
     - begin: '(\()\s*(pop)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -248,6 +256,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#numerals'
+      - include: '#comments'
     - begin: '(\()\s*(assert)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -257,6 +266,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#terms'
+      - include: '#comments'
     - begin: '(\()\s*(check-sat)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -267,6 +277,7 @@ repository:
       patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
+      - include: '#comments'
     - begin: '(\()\s*(get-assertions)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -298,6 +309,7 @@ repository:
       patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
+      - include: '#comments'
     - begin: '(\()\s*(get-assignment)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -314,6 +326,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#keywords'
+      - include: '#comments'
     - begin: '(\()\s*(get-info)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -323,6 +336,7 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#keywords'
+      - include: '#comments'
 
 
   # declarations:
