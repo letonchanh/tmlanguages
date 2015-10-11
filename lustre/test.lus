@@ -13,10 +13,15 @@ const observer_init = 1 ;
 
 (* bla bla bla *)
 -- bli blu blo
+(* nested (* comments *) *)
+
+function abs (in: real) returns (out: real) ;
+--@require out = if in < 0 then -in else in ;
 
 node observer (
   HeadMode, ailStick, elevStick, AltMode, FPAMode, ATMode_Out1_61,
   AltCmd_Out1_71, Altitude_Out1_81, CAS_Out1_91, CASCmdMCP_Out1_101, AltCmd,
+  -- Comment in inputs.
   Altitude, gskts, hdot, hdot_change_rate, gamcmd_Out1_25, gamma_Out1_35,
   thetadeg_Out1_45, VT_Out1_55 : real ;
   bla: subrange[0, 10] ;
@@ -25,15 +30,22 @@ node observer (
   HeadEng, AltEng, FPAEng : bool;
   AltEng_r, FPAEng_r : real;
   ATEng : bool;
+  -- Comment in outputs.
   CasCmd, PitchCmd: real ;
   prePitch : real ;
 ) ;
 
---@contract init ;
+-- OLD VERSION
+
+--@var whatevs = 7 ;
+
+--@const bla: int = 3 ;
+
+--@mode init ;
 --@require before_lt(observer_init) ;
 --@ensure true ;
 
---@contract guide_100 ;
+--@mode guide_100 ;
 --@require after_ge(observer_init) ;
 --@require ATMode_Out1_61 <> 0.0 ;
 --@require false -> pre ATMode_Out1_61 <> 0.0 ;
@@ -41,7 +53,7 @@ node observer (
 --@ensure CASCmdMCP_Out1_101 = CAS_Out1_91 ;
 --@ensure CASCmdMCP_Out1_101 = CasCmd ;
 
---@contract guide_120_130 ;
+--@mode guide_120_130 ;
 --@require after_ge(observer_init) ;
 --@require AltMode = 0.0 ;
 --@require FPAMode <> 0.0 ;
@@ -50,60 +62,127 @@ node observer (
 --@require VT_Out1_55 = 100.0 ;
 -- hassumption from FPA
 --@require (gamma_Out1_35 = (5.0 -> pre PitchCmd) / 1.400000) ;
--- --@require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
--- --@require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
+--@require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
+--@require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
 --@ensure true -> (
   ( gamcmd_Out1_25 = gamma_Out1_35 ) or (
     ( gamcmd_Out1_25 > gamma_Out1_35  ) and
     ( PitchCmd > pre ( prePitch )  )
   ) or (
     ( gamcmd_Out1_25 < gamma_Out1_35  ) and
+    -- Comment in expression
     ( PitchCmd < pre ( prePitch )  )
   )
 ) ;
+
+-- NEW VERSION
+(*@contract[exhaustive, exclusive]
+
+  var whatevs = 7 ;
+  const bla: int = 3 ;
+
+  -- Global req/ens.
+  require bla(input) ;
+  ensure out1 + out2 = 42 ;
+
+  -- Modes...
+
+  mode init (
+    require before_lt(observer_init) ;
+    ensure true ;
+  ) ;
+
+  mode guide_100 (
+    require after_ge(observer_init) ;
+    require ATMode_Out1_61 <> 0.0 ;
+    require false -> pre ATMode_Out1_61 <> 0.0 ;
+    require FPAMode = 0.0 ;
+    ensure CASCmdMCP_Out1_101 = CAS_Out1_91 ;
+    ensure CASCmdMCP_Out1_101 = CasCmd ;
+  ) ;
+
+  mode guide_100_refined when (
+    init or (guide_100 and not init)
+  ) (
+    require ATMode_Out1_61 > 0.0 ;
+    ensure CASCmdMCP_Out1_101 < 0.0 ;
+  ) ;
+
+  mode guide_120_130 (
+    require after_ge(observer_init) ;
+    require AltMode = 0.0 ;
+    require FPAMode <> 0.0 ;
+    require elevStick = 0.0 ;
+    require ailStick = 0.0 ;
+    require VT_Out1_55 = 100.0 ;
+    -- hassumption from FPA
+    require (gamma_Out1_35 = (5.0 -> pre PitchCmd) / 1.400000) ;
+    require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
+    require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
+    ensure true -> (
+      ( gamcmd_Out1_25 = gamma_Out1_35 ) or (
+        ( gamcmd_Out1_25 > gamma_Out1_35  ) and
+        ( PitchCmd > pre ( prePitch )  )
+      ) or (
+        ( gamcmd_Out1_25 < gamma_Out1_35  ) and
+        -- Comment in expression
+        ( PitchCmd < pre ( prePitch )  )
+      )
+    ) ;
+  ) ;
+*)
 
 let
 
   HeadEng, AltEng, FPAEng, ATEng, CasCmd = AutoPilot(
     HeadMode, ailStick, elevStick, AltMode, FPAMode, ATMode_Out1_61,
     AltCmd_Out1_71, Altitude_Out1_81, CAS_Out1_91, CASCmdMCP_Out1_101
-  );
+  ) ;
+
+  (HeadEng, AltEng, FPAEng, ATEng, CasCmd) = AutoPilot(
+    HeadMode, ailStick, elevStick, AltMode, FPAMode, ATMode_Out1_61,
+    -- Comment in node call.
+    AltCmd_Out1_71, Altitude_Out1_81, CAS_Out1_91, CASCmdMCP_Out1_101
+  ) ;
 
   AltEng_r = if AltEng then 10.0 else 0.0 ;
   FPAEng_r = if FPAEng then 10.0 else 0.0 ;
      
   altgammaCmd = AltitudeControl(
     AltEng_r, AltCmd,  Altitude, gskts, hdot, hdot_change_rate
-  );
+  ) ;
   
-  fpain = altgammaCmd + gamcmd_Out1_25;
+  fpain = altgammaCmd + gamcmd_Out1_25 ;
 
   PitchCmd = FPAControl(
     FPAEng_r, fpain, gamma_Out1_35, thetadeg_Out1_45, VT_Out1_55
-  );
+  ) ;
 
-  prePitch = 5.0 -> pre PitchCmd ;
+  prePitch = -5.0 -> pre PitchCmd ;
 
-  --!MAIN : true;
+  --!MAIN : true ;
 
 tel
 
-type rational = { n: int; d: int };
+type rational = { n: int; d: int } ;
+
+const whatevs: int = 7 ;
 
 const C1 = [1, 2, 3];
 const C2 = 1^3;
+const C3 = { something = 7 + 3 };
 -- const C3[i] : int^3 = i;
 
 node X(s: int; const array_size: int) returns (A8: int^2);
 const array_default = 0;
 var 
-  A1, A2, A7: int^array_size;
-  A3, A4: int^array_size^array_size;
-  A5: [int, bool]^array_size;
-  A6: rational^array_size;
-  A9, A10: int^3;
-  i: real;
-  j: bool;
+  A1, A2, A7 : int^array_size ;
+  A3, A4 : int^array_size^array_size ;
+  A5 : [int, bool]^array_size ;
+  A6 : rational^array_size ;
+  A9, A10 : int^3 ;
+  i : real ;
+  j : bool ;
 
 let
 
@@ -138,8 +217,8 @@ let
   -- Return an array from a node call
   A8[i] = 0;
 
-  -- A9[i] = C1[i] -> pre A9[i] + 1;
+  A9[i] = C1[i] -> pre A9[i] + 1;
 
-  -- A10[i] = C2[i] -> pre A10[i] + 1;
+  A10[i] = C2[i] -> pre A10[i] + 1;
 
 tel
