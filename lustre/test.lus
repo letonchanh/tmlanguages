@@ -76,50 +76,49 @@ node observer (
 ) ;
 
 -- NEW VERSION
-(*@contract[exhaustive, exclusive]
+(*@contract
 
   var whatevs = 7 ;
   const bla: int = 3 ;
 
   -- Global req/ens.
-  require bla(input) ;
-  ensure out1 + out2 = 42 ;
+  @require bla(input) ;
+  @ensure out1 + out2 = 42 ;
 
   -- Modes...
 
-  mode init (
-    require before_lt(observer_init) ;
-    ensure true ;
+  @mode init (
+    @require before_lt(observer_init) ;
+    @ensure true ;
   ) ;
 
-  mode guide_100 (
-    require after_ge(observer_init) ;
-    require ATMode_Out1_61 <> 0.0 ;
-    require false -> pre ATMode_Out1_61 <> 0.0 ;
-    require FPAMode = 0.0 ;
-    ensure CASCmdMCP_Out1_101 = CAS_Out1_91 ;
-    ensure CASCmdMCP_Out1_101 = CasCmd ;
+  @mode guide_100 (
+    @require after_ge(observer_init) ;
+    @require ATMode_Out1_61 <> 0.0 ;
+    @require false -> pre ATMode_Out1_61 <> 0.0 ;
+    @require FPAMode = 0.0 ;
+    @ensure CASCmdMCP_Out1_101 = CAS_Out1_91 ;
+    @ensure CASCmdMCP_Out1_101 = CasCmd ;
   ) ;
 
-  mode guide_100_refined when (
-    init or (guide_100 and not init)
-  ) (
-    require ATMode_Out1_61 > 0.0 ;
-    ensure CASCmdMCP_Out1_101 < 0.0 ;
+  @mode guide_100_refined (
+    @require init or (guide_100 and not init) ;
+    @require ATMode_Out1_61 > 0.0 ;
+    @ensure CASCmdMCP_Out1_101 < 0.0 ;
   ) ;
 
-  mode guide_120_130 (
-    require after_ge(observer_init) ;
-    require AltMode = 0.0 ;
-    require FPAMode <> 0.0 ;
-    require elevStick = 0.0 ;
-    require ailStick = 0.0 ;
-    require VT_Out1_55 = 100.0 ;
+  @mode guide_120_130 (
+    @require after_ge(observer_init) ;
+    @require AltMode = 0.0 ;
+    @require FPAMode <> 0.0 ;
+    @require elevStick = 0.0 ;
+    @require ailStick = 0.0 ;
+    @require VT_Out1_55 = 100.0 ;
     -- hassumption from FPA
-    require (gamma_Out1_35 = (5.0 -> pre PitchCmd) / 1.400000) ;
-    require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
-    require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
-    ensure true -> (
+    @require (gamma_Out1_35 = (5.0 -> pre PitchCmd) / 1.400000) ;
+    @require ( gamcmd_Out1_25 > 1.0 and gamcmd_Out1_25 < 10.0  ) ;
+    @require prePitch = 3.0 -> prePitch = pre(PitchCmd) ;
+    @ensure true -> (
       ( gamcmd_Out1_25 = gamma_Out1_35 ) or (
         ( gamcmd_Out1_25 > gamma_Out1_35  ) and
         ( PitchCmd > pre ( prePitch )  )
@@ -209,7 +208,7 @@ let
   A5[i] = { i, i mod 2 = 0 };
 
   -- Array of records
-  A6[i] = rational { n=i; d=i+1 };
+  A6[i] = rational { n = i ; d = i + 1 } ;
 
   -- Temporal operator applied to running variable: legal?
   A7[i] = 0 -> pre i;

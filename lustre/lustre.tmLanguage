@@ -49,6 +49,282 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>blockContract</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(\(\*)(@contract)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\*\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#comment</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockOpts</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockVar</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockMode</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockStmt</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(/\*)(@contract)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\*/)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#comment</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockOpts</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockVar</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockMode</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockStmt</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>blockMode</key>
+		<dict>
+			<key>begin</key>
+			<string>(@mode)\s*(\w+)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.lustre</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.lustre</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#comment</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\(</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>comment</key>
+					<string>Actual contract</string>
+					<key>end</key>
+					<string>\)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#comment</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockStmt</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>blockOpts</key>
+		<dict>
+			<key>begin</key>
+			<string>\[</string>
+			<key>end</key>
+			<string>\]</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>exhaustive|exclusive</string>
+					<key>name</key>
+					<string>constant.other.lustre</string>
+				</dict>
+			</array>
+		</dict>
+		<key>blockStmt</key>
+		<dict>
+			<key>begin</key>
+			<string>@(require|ensure)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#expression</string>
+				</dict>
+			</array>
+		</dict>
+		<key>blockVar</key>
+		<dict>
+			<key>begin</key>
+			<string>(var|const)\s*(\w+)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.lustre</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.lustre</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.lustre</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>=</string>
+					<key>name</key>
+					<string>keyword.lustre</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>:</string>
+					<key>end</key>
+					<string>=</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#type</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#expression</string>
+				</dict>
+			</array>
+		</dict>
 		<key>body</key>
 		<dict>
 			<key>begin</key>
@@ -75,15 +351,15 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#internAnnotation</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#comment</string>
 				</dict>
 				<dict>
 					<key>include</key>
 					<string>#equation</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#internAnnotation</string>
 				</dict>
 			</array>
 		</dict>
@@ -109,6 +385,21 @@
 					<string>\(\*</string>
 					<key>end</key>
 					<string>\*\)</string>
+					<key>name</key>
+					<string>comment.lustre</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#comment</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>/\*</string>
+					<key>end</key>
+					<string>\*/</string>
 					<key>name</key>
 					<string>comment.lustre</string>
 					<key>patterns</key>
@@ -281,14 +572,40 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(\w+)\s*=</string>
+					<string>assert</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.lustre</string>
+							<string>constant.other.lustre</string>
 						</dict>
+					</dict>
+					<key>comment</key>
+					<string>Assertion.</string>
+					<key>end</key>
+					<string>;</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>constant.other.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#expression</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\w+\s*(=)</string>
+					<key>beginCaptures</key>
+					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
@@ -317,15 +634,10 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>\((\w+\s*[,\s*\w+\s*]*)\)\s*=</string>
+					<string>\((\w+\s*[,\s*\w+\s*]*)\)\s*(=)</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-						<key>1</key>
+						<key>2</key>
 						<dict>
 							<key>name</key>
 							<string>constant.numeric.lustre</string>
@@ -353,15 +665,10 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>(\w+\s*[,\s*\w+\s*]*)\s*=</string>
+					<string>(\w+\s*[,\s*\w+\s*]*)\s*(=)</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-						<key>1</key>
+						<key>2</key>
 						<dict>
 							<key>name</key>
 							<string>constant.numeric.lustre</string>
@@ -389,23 +696,18 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>(\w+)\s*((\[\s*[^\]]+\s*\]\s*)+)=</string>
+					<string>(\w+)\s*((?:\[\s*[^\]]+\s*\]\s*)+)(=)</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>constant.numeric.lustre</string>
-						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
 							<string>constant.other.lustre</string>
+						</dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>constant.numeric.lustre</string>
 						</dict>
 					</dict>
 					<key>comment</key>
@@ -442,7 +744,7 @@
 					<key>comment</key>
 					<string>Keywords</string>
 					<key>match</key>
-					<string>\b(if|then|else|not|and|or|pre|fby)\b</string>
+					<string>\b(if|then|else|not|and|or|pre|fby|mod)\b</string>
 					<key>name</key>
 					<string>keyword.lustre</string>
 				</dict>
@@ -574,7 +876,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>constant.other.lustre</string>
+									<string>constant.numeric.lustre</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -586,6 +888,10 @@
 									<string>#expression</string>
 								</dict>
 							</array>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#expression</string>
 						</dict>
 					</array>
 				</dict>
@@ -599,7 +905,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#inContract</string>
+					<string>#blockContract</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -689,296 +995,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>inContrMode</key>
-		<dict>
-			<key>begin</key>
-			<string>(mode)\s*(\w+)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>constant.numeric.lustre</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>;</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#comment</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>when\s*(\()</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>constant.other.lustre</string>
-						</dict>
-					</dict>
-					<key>comment</key>
-					<string>When clause</string>
-					<key>end</key>
-					<string>\)</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>constant.other.lustre</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#inContrWhenExpr</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-					</dict>
-					<key>comment</key>
-					<string>Actual contract</string>
-					<key>end</key>
-					<string>\)</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#comment</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#inContrStmt</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>inContrOpts</key>
-		<dict>
-			<key>begin</key>
-			<string>\[</string>
-			<key>end</key>
-			<string>\]</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>exhaustive|exclusive</string>
-					<key>name</key>
-					<string>constant.other.lustre</string>
-				</dict>
-			</array>
-		</dict>
-		<key>inContrStmt</key>
-		<dict>
-			<key>begin</key>
-			<string>(require|ensure)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(;)</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#expression</string>
-				</dict>
-			</array>
-		</dict>
-		<key>inContrVar</key>
-		<dict>
-			<key>begin</key>
-			<string>(var|const)\s*(\w+)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>constant.numeric.lustre</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(;)</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>=</string>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>:</string>
-					<key>end</key>
-					<string>=</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.lustre</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#type</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#expression</string>
-				</dict>
-			</array>
-		</dict>
-		<key>inContrWhenExpr</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>end</key>
-					<string>\)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#inContrWhenExpr</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>comment</key>
-					<string>Bool operators</string>
-					<key>match</key>
-					<string>(not|and|or)\b|=&gt;</string>
-					<key>name</key>
-					<string>constant.other.lustre</string>
-				</dict>
-				<dict>
-					<key>comment</key>
-					<string>Ident correspending to another mode</string>
-					<key>match</key>
-					<string>\w+</string>
-				</dict>
-			</array>
-		</dict>
-		<key>inContract</key>
-		<dict>
-			<key>begin</key>
-			<string>(\(\*@)(contract)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>comment.lustre</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(\*\))</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>comment.lustre</string>
-				</dict>
-			</dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#comment</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#inContrOpts</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#inContrVar</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#inContrMode</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#inContrStmt</string>
-				</dict>
-			</array>
-		</dict>
 		<key>include</key>
 		<dict>
 			<key>captures</key>
@@ -1025,36 +1041,109 @@
 		</dict>
 		<key>lustrecOrKind2</key>
 		<dict>
-			<key>begin</key>
-			<string>(--[!|%])(\w+)\s*:</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>comment.lustre</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(;)</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.lustre</string>
-				</dict>
-			</dict>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>include</key>
-					<string>#expression</string>
+					<key>begin</key>
+					<string>(--)((%|!)\w+)\s*(:)?</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.lustre</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(;)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#expression</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(\(\*)((%|!)\w+)\s*(:)?</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.lustre</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\*\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#expression</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(/\*)((%|!)\w+)\s*(:)?</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.lustre</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\*/)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.lustre</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#expression</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>
@@ -1407,6 +1496,14 @@
 			<string>(?=(let))</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#comment</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#constKey</string>
+				</dict>
 				<dict>
 					<key>begin</key>
 					<string>:</string>

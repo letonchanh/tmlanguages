@@ -37,14 +37,14 @@ repository:
 
   # Annotations.
 
-  inContrVar:
+  blockVar:
     begin: '(var|const)\s*(\w+)'
     beginCaptures:
       '1': {name: keyword.lustre}
       '2': {name: constant.numeric.lustre}
-    end: '(;)'
+    end: ';'
     endCaptures:
-      '1': {name: keyword.lustre}
+      '0': {name: keyword.lustre}
     patterns:
     - name: keyword.lustre
       match: '='
@@ -56,46 +56,24 @@ repository:
       - include: '#type'
     - include: '#expression'
 
-  inContrStmt:
-    begin: '(require|ensure)'
+  blockStmt:
+    begin: '@(require|ensure)'
     beginCaptures:
-      '1': {name: keyword.lustre}
-    end: '(;)'
+      '0': {name: support.type.lustre}
+    end: ';'
     endCaptures:
-      '1': {name: keyword.lustre}
+      '0': {name: support.type.lustre}
     patterns:
     - include: '#expression'
 
-  inContrWhenExpr:
-    patterns:
-    - begin: '\('
-      end: '\)'
-      patterns:
-      - include: '#inContrWhenExpr'
-    - comment: Bool operators
-      name: constant.other.lustre
-      match: '(not|and|or)\b|=>'
-    - comment: Ident correspending to another mode
-      match: '\w+'
-
-  inContrMode:
-    begin: '(mode)\s*(\w+)'
+  blockMode:
+    begin: '(@mode)\s*(\w+)'
     beginCaptures:
       '1': {name: keyword.lustre}
       '2': {name: constant.numeric.lustre}
     end: ';'
     patterns:
     - include: '#comment'
-    - comment: When clause
-      begin: 'when\s*(\()'
-      beginCaptures:
-        '0': {name: keyword.lustre}
-        '1': {name: constant.other.lustre}
-      end: '\)'
-      endCaptures:
-        '0': {name: constant.other.lustre}
-      patterns:
-      - include: '#inContrWhenExpr'
     - comment: Actual contract
       begin: '\('
       beginCaptures:
@@ -105,29 +83,43 @@ repository:
         '0': {name: keyword.lustre}
       patterns:
       - include: '#comment'
-      - include: '#inContrStmt'
+      - include: '#blockStmt'
 
-  inContrOpts:
+  blockOpts:
     begin: '\['
     end: '\]'
     patterns:
     - name: constant.other.lustre
       match: 'exhaustive|exclusive'
 
-  inContract:
-    begin: '(\(\*@)(contract)'
-    beginCaptures:
-      '1': {name: comment.lustre}
-      '2': {name: keyword.lustre}
-    end: '(\*\))'
-    endCaptures:
-      '1': {name: comment.lustre}
+  blockContract:
     patterns:
-    - include: '#comment'
-    - include: '#inContrOpts'
-    - include: '#inContrVar'
-    - include: '#inContrMode'
-    - include: '#inContrStmt'
+    - begin: '(\(\*)(@contract)'
+      beginCaptures:
+        '1': {name: comment.lustre}
+        '2': {name: keyword.lustre}
+      end: '(\*\))'
+      endCaptures:
+        '1': {name: comment.lustre}
+      patterns:
+      - include: '#comment'
+      - include: '#blockOpts'
+      - include: '#blockVar'
+      - include: '#blockMode'
+      - include: '#blockStmt'
+    - begin: '(/\*)(@contract)'
+      beginCaptures:
+        '1': {name: comment.lustre}
+        '2': {name: keyword.lustre}
+      end: '(\*/)'
+      endCaptures:
+        '1': {name: comment.lustre}
+      patterns:
+      - include: '#comment'
+      - include: '#blockOpts'
+      - include: '#blockVar'
+      - include: '#blockMode'
+      - include: '#blockStmt'
 
   ghostVar:
     begin: '(--@)(var|const)\s*(\w+)'
@@ -169,20 +161,39 @@ repository:
     - include: '#expression'
 
   lustrecOrKind2:
-    begin: '(--[!|%])(\w+)\s*:'
-    beginCaptures:
-      '1': {name: comment.lustre}
-      '2': {name: keyword.lustre}
-    end: '(;)'
-    endCaptures:
-      '1': {name: keyword.lustre}
     patterns:
-    - include: '#expression'
+    - begin: '(--)((%|!)\w+)\s*(:)?'
+      beginCaptures:
+        '1': {name: comment.lustre}
+        '2': {name: support.type.lustre}
+      end: '(;)'
+      endCaptures:
+        '1': {name: keyword.lustre}
+      patterns:
+      - include: '#expression'
+    - begin: '(\(\*)((%|!)\w+)\s*(:)?'
+      beginCaptures:
+        '1': {name: comment.lustre}
+        '2': {name: support.type.lustre}
+      end: '(\*\))'
+      endCaptures:
+        '1': {name: comment.lustre}
+      patterns:
+      - include: '#expression'
+    - begin: '(/\*)((%|!)\w+)\s*(:)?'
+      beginCaptures:
+        '1': {name: comment.lustre}
+        '2': {name: support.type.lustre}
+      end: '(\*/)'
+      endCaptures:
+        '1': {name: comment.lustre}
+      patterns:
+      - include: '#expression'
 
   externAnnotation:
     comment: Annotations outside bodies.
     patterns:
-    - include: '#inContract'
+    - include: '#blockContract'
     - include: '#ghostVar'
     - include: '#contractMode'
     - include: '#contractStmt'
@@ -202,6 +213,11 @@ repository:
     - name: comment.lustre
       begin: '\(\*'
       end: '\*\)'
+      patterns:
+      - include: '#comment'
+    - name: comment.lustre
+      begin: '/\*'
+      end: '\*/'
       patterns:
       - include: '#comment'
 
@@ -325,7 +341,7 @@ repository:
     - include: '#comment'
     - comment: Keywords
       name: keyword.lustre
-      match: '\b(if|then|else|not|and|or|pre|fby)\b'
+      match: '\b(if|then|else|not|and|or|pre|fby|mod)\b'
     - comment: -> keyword (no \b delimiter)
       name: keyword.lustre
       match: '->'
@@ -365,20 +381,29 @@ repository:
       patterns:
       - begin: '\w+\s*(=)'
         beginCaptures:
-          '1': {name: constant.other.lustre}
+          '1': {name: constant.numeric.lustre}
         end: '(;|(?=}))'
         patterns:
         - include: '#expression'
+      - include: '#expression'
 
 
   # Equations
 
   equation:
     patterns:
-      - comment: Regular ident lhs.
-        begin: '(\w+)\s*='
+      - comment: Assertion.
+        begin: 'assert'
         beginCaptures:
-          '0': {name: keyword.lustre}
+          '0': {name: constant.other.lustre}
+        end: ';'
+        endCaptures:
+          '0': {name: constant.other.lustre}
+        patterns:
+        - include: '#expression'
+      - comment: Regular ident lhs.
+        begin: '\w+\s*(=)'
+        beginCaptures:
           '1': {name: constant.numeric.lustre}
         end: '(;)'
         endCaptures:
@@ -386,31 +411,28 @@ repository:
         patterns:
         - include: '#expression'
       - comment: Parenthesized tuple equation.
-        begin: '\((\w+\s*[,\s*\w+\s*]*)\)\s*='
+        begin: '\((\w+\s*[,\s*\w+\s*]*)\)\s*(=)'
         beginCaptures:
-          '0': {name: keyword.lustre}
-          '1': {name: constant.numeric.lustre}
+          '2': {name: constant.numeric.lustre}
         end: '(;)'
         endCaptures:
           '1': {name: constant.numeric.lustre}
         patterns:
         - include: '#expression'
       - comment: Unparenthesized tuple equation.
-        begin: '(\w+\s*[,\s*\w+\s*]*)\s*='
+        begin: '(\w+\s*[,\s*\w+\s*]*)\s*(=)'
         beginCaptures:
-          '0': {name: keyword.lustre}
-          '1': {name: constant.numeric.lustre}
+          '2': {name: constant.numeric.lustre}
         end: '(;)'
         endCaptures:
           '1': {name: constant.numeric.lustre}
         patterns:
         - include: '#expression'
       - comment: Array thing.
-        begin: '(\w+)\s*((\[\s*[^\]]+\s*\]\s*)+)='
+        begin: '(\w+)\s*((?:\[\s*[^\]]+\s*\]\s*)+)(=)'
         beginCaptures:
-          '0': {name: keyword.lustre}
-          '1': {name: constant.numeric.lustre}
           '2': {name: constant.other.lustre}
+          '3': {name: constant.numeric.lustre}
         end: ';'
         endCaptures:
           '0': {name: constant.numeric.lustre}
@@ -426,6 +448,8 @@ repository:
       '1': {name: keyword.lustre}
     end: '(?=(let))'
     patterns:
+    - include: '#comment'
+    - include: '#constKey'
     - begin: ':'
       beginCaptures:
         '0': {name: keyword.lustre}
@@ -446,9 +470,9 @@ repository:
     endCaptures:
       '1': {name: keyword.lustre}
     patterns:
+    - include: '#internAnnotation'
     - include: '#comment'
     - include: '#equation'
-    - include: '#internAnnotation'
 
 
   # Type declaration
