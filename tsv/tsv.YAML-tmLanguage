@@ -1,0 +1,330 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+
+# Oniguruma Regular Expressions:
+#   https://sonoisa.github.io/ogrekit/About_(English)_files/RE.txt
+
+# Sublime tuto:
+#   http://sublimetext.info/docs/en/extensibility/syntaxdefs.html
+
+# Prolog example:
+#   https://github.com/alnkpa/sublimeprolog/blob/master/support/Prolog.YAML-tmLanguage
+
+# Scopes:
+# - keyword
+# - comment
+# - constant.other
+# - constant.numeric
+# - support.type
+
+---
+name: TSV-LIB
+scopeName: tsv
+fileTypes: [tsv]
+uuid: bc1d9256-66de-45e3-8be6-813b26a05a7c
+
+patterns:
+- include: '#comments'
+- include: '#commands'
+
+
+repository:
+
+  comments:
+    name: comment.tsv
+    match: ';.*$'
+
+  reserved:
+    name: 'constant.numeric.other.tsv'
+    match: '\b(par|STRING|DECIMAL|NUMERAL|_|as|let|forall|exists)\b|!'
+
+  numerals:
+    name: constant.other.tsv
+    match: '\b(0|[1-9][0-9]*)\b'
+
+  consts:
+    patterns:
+    - comment: Decimals.
+      name: constant.other.tsv
+      match: '\b(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)'
+    - include: '#numerals'
+    - comment: Hexadecimals.
+      name: constant.other.tsv
+      match: '#x\h+'
+    - comment: Binarys.
+      name: constant.other.tsv
+      match: '#b(0|1)+'
+    - comment: String literals.
+      name: constant.other.tsv
+      match: '\"(\\\"|[^\"])*\"'
+
+  convenienceSymbols:
+    patterns:
+    - comment: Propositional and =.
+      name: keyword.tsv
+      match: '(\b(true|false|and|or|ite|not)\b)|((=>|=)\s)'
+    - comment: Arithmetic.
+      name: keyword.tsv
+      match: '[<>[<=][>=]\+\-\*/]\s'
+    - comment: Pritive types.
+      name: support.type.tsv
+      match: '\b(Bool|Int|Real)\b'
+
+  simpleSymbols:
+    patterns:
+    - match: '[~@\$%\^&\*\-\+=<>\.\?/][~!@\$%\^&\*\-\+=<>\.\?/\w]*'
+    - comment: Word separator if starting by alpha.
+      match: '\b[a-zA-Z][~!@\$%\^&\*\-\+=<>\.\?/\w]*'
+    # - comment: Word separator if starting by alpha.
+    #            Capital is interpreted as type for readability
+    #   name: support.type.tsv
+    #   match: '\b[A-Z][~!@\$%\^&\*-\+=<>\.\?/\w]*'
+    - comment: _ and ! are reserved.
+      match: '[!_][~!@\$%\^&\*\-\+=<>\.\?/\w]+'
+
+  quotedSymbols:
+    begin: '(\|)'
+    beginCaptures:
+      '0': {name: constant.numeric.tsv }
+    end: '(\|)'
+    endCaptures:
+      '0': {name: constant.numeric.tsv }
+    patterns:
+    - comment: Hilight backslash because illegal.
+      name: invalid.tsv
+      match: '\\'
+
+  keywords:
+    name: keyword.tsv
+    match: ':[\w~!@\$%\^&\*\-\+=<>\.\?/]+'
+
+  # sExpr:
+  #   patterns:
+  #   - include: '#consts'
+  #   - include: '#convenienceSymbols'
+  #   - include: '#simpleSymbols'
+  #   - include: '#quotedSymbols'
+  #   - begin: '\('
+  #     end: '\)'
+  #     patterns:
+  #     - include: '#sExpr'
+  #     - comment: For annotations.
+  #       include: '#keywords'
+  #     - name: invalid.tsv
+  #       match: '[^\s\)]'
+
+  indexed:
+    comment: Indexing on quoted.
+    begin: '(\()\s*(_)\b'
+    beginCaptures:
+      '1': {name: keyword.tsv}
+      '2': {name: constant.numeric.tsv}
+    end: '\)'
+    endCaptures:
+      '0': {name: keyword.tsv}
+    patterns:
+      - include: '#simpleSymbols'
+      - include: '#quotedSymbols'
+      - name: invalid.tsv
+        match: '[^\s*\)]*'
+
+  # sorts:
+  #   patterns:
+  #   - include: '#identifiers'
+  #   - begin: '(\()'
+  #     beginCaptures:
+  #       '1': {name: keyword.tsv}
+  #     end: '(\))'
+  #     endCaptures:
+  #       '1': {name: keyword.tsv}
+  #     patterns:
+  #     - include: '#sort'
+
+  terms:
+    patterns:
+    - include: '#consts'
+    - include: '#convenienceSymbols'
+    - include: '#simpleSymbols'
+    - include: '#quotedSymbols'
+    - include: '#indexed'
+    - begin: '\('
+      end: '\)'
+      patterns:
+      - include: '#comments'
+      - include: '#reserved'
+      - include: '#terms'
+      - comment: For annotations.
+        include: '#keywords'
+      - name: invalid.tsv
+        match: '[^\s\)]'
+
+
+  commands:
+    patterns:
+    - begin: '(\()\s*(set-logic)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#simpleSymbols'
+      - include: '#quotedSymbols'
+      - include: '#comments'
+    - begin: '(\()\s*(set-option)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#keywords'
+      - include: '#terms'
+      - include: '#comments'
+    - begin: '(\()\s*(set-info)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#comments'
+    - begin: '(\()\s*(declare-sort)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#comments'
+      - include: '#simpleSymbols'
+      - include: '#quotedSymbols'
+      - include: '#numerals'
+    - begin: '(\()\s*(define-sort)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#comments'
+      - include: '#terms'
+    - begin: '(\()\s*(declare-fun)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#comments'
+      - include: '#terms'
+    - begin: '(\()\s*(define-(fun|system|prop|rel))'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#terms'
+      - include: '#comments'
+    - begin: '(\()\s*(push)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#numerals'
+      - include: '#comments'
+    - begin: '(\()\s*(pop)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#numerals'
+      - include: '#comments'
+    - begin: '(\()\s*(assert|verify-assuming|verify)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#terms'
+      - include: '#comments'
+    - begin: '(\()\s*(get-assertions)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+    - begin: '(\()\s*(get-proof)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+    - begin: '(\()\s*(get-unsat-core)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+    - begin: '(\()\s*(get-value)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#simpleSymbols'
+      - include: '#quotedSymbols'
+      - include: '#comments'
+    - begin: '(\()\s*(get-assignment)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+    - begin: '(\()\s*(get-option)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#keywords'
+      - include: '#comments'
+    - begin: '(\()\s*(get-info)'
+      beginCaptures:
+        '1': {name: keyword.tsv}
+        '2': {name: constant.numeric.tsv}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.tsv}
+      patterns:
+      - include: '#keywords'
+      - include: '#comments'
+
+
+  # declarations:
+  #   match: 'declare-fun|declare-sort'
+
+...

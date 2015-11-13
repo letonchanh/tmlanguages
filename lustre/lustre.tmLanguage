@@ -49,6 +49,36 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>blockAssGua</key>
+		<dict>
+			<key>begin</key>
+			<string>(assume|guarantee)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#expression</string>
+				</dict>
+			</array>
+		</dict>
 		<key>blockContract</key>
 		<dict>
 			<key>patterns</key>
@@ -87,10 +117,6 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#blockOpts</string>
-						</dict>
-						<dict>
-							<key>include</key>
 							<string>#blockVar</string>
 						</dict>
 						<dict>
@@ -100,6 +126,14 @@
 						<dict>
 							<key>include</key>
 							<string>#blockStmt</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockAssGua</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockImport</string>
 						</dict>
 					</array>
 				</dict>
@@ -137,10 +171,6 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#blockOpts</string>
-						</dict>
-						<dict>
-							<key>include</key>
 							<string>#blockVar</string>
 						</dict>
 						<dict>
@@ -151,14 +181,59 @@
 							<key>include</key>
 							<string>#blockStmt</string>
 						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockAssGua</string>
+						</dict>
 					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>blockImport</key>
+		<dict>
+			<key>begin</key>
+			<string>(import)\s+([a-zA-Z][a-zA-Z_\-\.]*)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.lustre</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>support.type.lustre</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>returns</string>
+					<key>name</key>
+					<string>keyword.lustre</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#expression</string>
 				</dict>
 			</array>
 		</dict>
 		<key>blockMode</key>
 		<dict>
 			<key>begin</key>
-			<string>(@mode)\s*(\w+)</string>
+			<string>(mode)\s*(\w+)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -217,26 +292,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>blockOpts</key>
-		<dict>
-			<key>begin</key>
-			<string>\[</string>
-			<key>end</key>
-			<string>\]</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>exhaustive|exclusive</string>
-					<key>name</key>
-					<string>constant.other.lustre</string>
-				</dict>
-			</array>
-		</dict>
 		<key>blockStmt</key>
 		<dict>
 			<key>begin</key>
-			<string>@(require|ensure)</string>
+			<string>(require|ensure)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key>
@@ -349,6 +408,22 @@
 			</dict>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#blockVar</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#blockMode</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#blockStmt</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#blockAssGua</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>#internAnnotation</string>
@@ -507,12 +582,12 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(--@)(mode)\s*(\w+)\s*(;)</string>
+			<string>(--@)(mode)\s+(\w+)\s*(;)</string>
 		</dict>
 		<key>contractStmt</key>
 		<dict>
 			<key>begin</key>
-			<string>(--@)(require|ensure)</string>
+			<string>(--@)(assume|guarantee)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -931,7 +1006,7 @@
 		<key>ghostVar</key>
 		<dict>
 			<key>begin</key>
-			<string>(--@)(var|const)\s*(\w+)</string>
+			<string>(--@)(var|const)\s+(\w+)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -1150,7 +1225,7 @@
 		<key>nodePref</key>
 		<dict>
 			<key>begin</key>
-			<string>\b(node|function)\s+(\w+)\s*\(</string>
+			<string>\b(node|function|contract)\s+(\w+)\s*\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key>

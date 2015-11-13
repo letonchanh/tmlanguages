@@ -57,7 +57,7 @@ repository:
     - include: '#expression'
 
   blockStmt:
-    begin: '@(require|ensure)'
+    begin: '(require|ensure)'
     beginCaptures:
       '0': {name: support.type.lustre}
     end: ';'
@@ -67,7 +67,7 @@ repository:
     - include: '#expression'
 
   blockMode:
-    begin: '(@mode)\s*(\w+)'
+    begin: '(mode)\s*(\w+)'
     beginCaptures:
       '1': {name: keyword.lustre}
       '2': {name: constant.numeric.lustre}
@@ -85,12 +85,28 @@ repository:
       - include: '#comment'
       - include: '#blockStmt'
 
-  blockOpts:
-    begin: '\['
-    end: '\]'
+  blockAssGua:
+    begin: '(assume|guarantee)'
+    beginCaptures:
+      '0': {name: support.type.lustre}
+    end: ';'
+    endCaptures:
+      '0': {name: support.type.lustre}
     patterns:
-    - name: constant.other.lustre
-      match: 'exhaustive|exclusive'
+    - include: '#expression'
+
+  blockImport:
+    begin: '(import)\s+([a-zA-Z][a-zA-Z_\-\.]*)'
+    beginCaptures:
+      '1': {name: support.type.lustre}
+      '2': {name: constant.numeric.lustre}
+    end: ';'
+    endCaptures:
+      '0': {name: support.type.lustre}
+    patterns:
+    - name: keyword.lustre
+      match: 'returns'
+    - include: '#expression'
 
   blockContract:
     patterns:
@@ -103,10 +119,11 @@ repository:
         '1': {name: comment.lustre}
       patterns:
       - include: '#comment'
-      - include: '#blockOpts'
       - include: '#blockVar'
       - include: '#blockMode'
       - include: '#blockStmt'
+      - include: '#blockAssGua'
+      - include: '#blockImport'
     - begin: '(/\*)(@contract)'
       beginCaptures:
         '1': {name: comment.lustre}
@@ -116,13 +133,13 @@ repository:
         '1': {name: comment.lustre}
       patterns:
       - include: '#comment'
-      - include: '#blockOpts'
       - include: '#blockVar'
       - include: '#blockMode'
       - include: '#blockStmt'
+      - include: '#blockAssGua'
 
   ghostVar:
-    begin: '(--@)(var|const)\s*(\w+)'
+    begin: '(--@)(var|const)\s+(\w+)'
     beginCaptures:
       '1': {name: comment.lustre}
       '2': {name: keyword.lustre}
@@ -142,7 +159,7 @@ repository:
     - include: '#expression'
 
   contractMode:
-    match: '(--@)(mode)\s*(\w+)\s*(;)'
+    match: '(--@)(mode)\s+(\w+)\s*(;)'
     captures:
       '1': {name: comment.lustre}
       '2': {name: keyword.lustre}
@@ -150,7 +167,7 @@ repository:
       '4': {name: keyword.lustre}
 
   contractStmt:
-    begin: '(--@)(require|ensure)'
+    begin: '(--@)(assume|guarantee)'
     beginCaptures:
       '1': {name: comment.lustre}
       '2': {name: keyword.lustre}
@@ -260,7 +277,7 @@ repository:
 
   nodePref:
     comment: More precisely, a node or a function prefix.
-    begin: '\b(node|function)\s+(\w+)\s*\('
+    begin: '\b(node|function|contract)\s+(\w+)\s*\('
     beginCaptures:
       '0': {name: constant.other.lustre}
       '1': {name: keyword.lustre}
@@ -470,6 +487,10 @@ repository:
     endCaptures:
       '1': {name: keyword.lustre}
     patterns:
+    - include: '#blockVar'
+    - include: '#blockMode'
+    - include: '#blockStmt'
+    - include: '#blockAssGua'
     - include: '#internAnnotation'
     - include: '#comment'
     - include: '#equation'
