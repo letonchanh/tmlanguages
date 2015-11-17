@@ -267,7 +267,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>(\()\s*(define-(fun|system|prop|rel))</string>
+					<string>(\()\s*(define-(fun|sys|prop|rel))</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

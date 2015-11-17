@@ -223,7 +223,7 @@ repository:
       patterns:
       - include: '#comments'
       - include: '#terms'
-    - begin: '(\()\s*(define-(fun|system|prop|rel))'
+    - begin: '(\()\s*(define-(fun|sys|prop|rel))'
       beginCaptures:
         '1': {name: keyword.tsv}
         '2': {name: constant.numeric.tsv}
