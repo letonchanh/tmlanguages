@@ -611,6 +611,33 @@
 				</dict>
 				<dict>
 					<key>begin</key>
+					<string>(\()\s*(get-model)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.smt2</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>constant.numeric.smt2</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.smt2</string>
+						</dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>begin</key>
 					<string>(\()\s*(get-option)</string>
 					<key>beginCaptures</key>
 					<dict>

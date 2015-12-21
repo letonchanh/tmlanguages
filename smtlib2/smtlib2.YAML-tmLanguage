@@ -317,6 +317,13 @@ repository:
       end: '(\))'
       endCaptures:
         '1': {name: keyword.smt2}
+    - begin: '(\()\s*(get-model)'
+      beginCaptures:
+        '1': {name: keyword.smt2}
+        '2': {name: constant.numeric.smt2}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.smt2}
     - begin: '(\()\s*(get-option)'
       beginCaptures:
         '1': {name: keyword.smt2}

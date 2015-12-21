@@ -17,9 +17,9 @@
 # - support.type
 
 ---
-name: TSV-LIB
-scopeName: tsv
-fileTypes: [tsv]
+name: VMT-LIB
+scopeName: vmt
+fileTypes: [vmt]
 uuid: bc1d9256-66de-45e3-8be6-813b26a05a7c
 
 patterns:
@@ -30,43 +30,43 @@ patterns:
 repository:
 
   comments:
-    name: comment.tsv
+    name: comment.vmt
     match: ';.*$'
 
   reserved:
-    name: 'constant.numeric.other.tsv'
+    name: 'constant.numeric.other.vmt'
     match: '\b(par|STRING|DECIMAL|NUMERAL|_|as|let|forall|exists)\b|!'
 
   numerals:
-    name: constant.other.tsv
+    name: constant.other.vmt
     match: '\b(0|[1-9][0-9]*)\b'
 
   consts:
     patterns:
     - comment: Decimals.
-      name: constant.other.tsv
+      name: constant.other.vmt
       match: '\b(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)'
     - include: '#numerals'
     - comment: Hexadecimals.
-      name: constant.other.tsv
+      name: constant.other.vmt
       match: '#x\h+'
     - comment: Binarys.
-      name: constant.other.tsv
+      name: constant.other.vmt
       match: '#b(0|1)+'
     - comment: String literals.
-      name: constant.other.tsv
+      name: constant.other.vmt
       match: '\"(\\\"|[^\"])*\"'
 
   convenienceSymbols:
     patterns:
     - comment: Propositional and =.
-      name: keyword.tsv
+      name: keyword.vmt
       match: '(\b(true|false|and|or|ite|not)\b)|((=>|=)\s)'
     - comment: Arithmetic.
-      name: keyword.tsv
+      name: keyword.vmt
       match: '[<>[<=][>=]\+\-\*/]\s'
     - comment: Pritive types.
-      name: support.type.tsv
+      name: support.type.vmt
       match: '\b(Bool|Int|Real)\b'
 
   simpleSymbols:
@@ -76,7 +76,7 @@ repository:
       match: '\b[a-zA-Z][~!@\$%\^&\*\-\+=<>\.\?/\w]*'
     # - comment: Word separator if starting by alpha.
     #            Capital is interpreted as type for readability
-    #   name: support.type.tsv
+    #   name: support.type.vmt
     #   match: '\b[A-Z][~!@\$%\^&\*-\+=<>\.\?/\w]*'
     - comment: _ and ! are reserved.
       match: '[!_][~!@\$%\^&\*\-\+=<>\.\?/\w]+'
@@ -84,17 +84,17 @@ repository:
   quotedSymbols:
     begin: '(\|)'
     beginCaptures:
-      '0': {name: constant.numeric.tsv }
+      '0': {name: constant.numeric.vmt }
     end: '(\|)'
     endCaptures:
-      '0': {name: constant.numeric.tsv }
+      '0': {name: constant.numeric.vmt }
     patterns:
     - comment: Hilight backslash because illegal.
-      name: invalid.tsv
+      name: invalid.vmt
       match: '\\'
 
   keywords:
-    name: keyword.tsv
+    name: keyword.vmt
     match: ':[\w~!@\$%\^&\*\-\+=<>\.\?/]+'
 
   # sExpr:
@@ -109,22 +109,22 @@ repository:
   #     - include: '#sExpr'
   #     - comment: For annotations.
   #       include: '#keywords'
-  #     - name: invalid.tsv
+  #     - name: invalid.vmt
   #       match: '[^\s\)]'
 
   indexed:
     comment: Indexing on quoted.
     begin: '(\()\s*(_)\b'
     beginCaptures:
-      '1': {name: keyword.tsv}
-      '2': {name: constant.numeric.tsv}
+      '1': {name: keyword.vmt}
+      '2': {name: constant.numeric.vmt}
     end: '\)'
     endCaptures:
-      '0': {name: keyword.tsv}
+      '0': {name: keyword.vmt}
     patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
-      - name: invalid.tsv
+      - name: invalid.vmt
         match: '[^\s*\)]*'
 
   # sorts:
@@ -132,10 +132,10 @@ repository:
   #   - include: '#identifiers'
   #   - begin: '(\()'
   #     beginCaptures:
-  #       '1': {name: keyword.tsv}
+  #       '1': {name: keyword.vmt}
   #     end: '(\))'
   #     endCaptures:
-  #       '1': {name: keyword.tsv}
+  #       '1': {name: keyword.vmt}
   #     patterns:
   #     - include: '#sort'
 
@@ -154,7 +154,7 @@ repository:
       - include: '#terms'
       - comment: For annotations.
         include: '#keywords'
-      - name: invalid.tsv
+      - name: invalid.vmt
         match: '[^\s\)]'
 
 
@@ -162,42 +162,42 @@ repository:
     patterns:
     - begin: '(\()\s*(set-logic)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
       - include: '#comments'
     - begin: '(\()\s*(set-option)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#keywords'
       - include: '#terms'
       - include: '#comments'
     - begin: '(\()\s*(set-info)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#comments'
     - begin: '(\()\s*(declare-sort)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#comments'
       - include: '#simpleSymbols'
@@ -205,120 +205,120 @@ repository:
       - include: '#numerals'
     - begin: '(\()\s*(define-sort)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#comments'
       - include: '#terms'
     - begin: '(\()\s*(declare-fun)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#comments'
       - include: '#terms'
     - begin: '(\()\s*(define-(fun|sys|prop|rel))'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#terms'
       - include: '#comments'
     - begin: '(\()\s*(push)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#numerals'
       - include: '#comments'
     - begin: '(\()\s*(pop)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#numerals'
       - include: '#comments'
     - begin: '(\()\s*(assert|verify-assuming|verify)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#terms'
       - include: '#comments'
     - begin: '(\()\s*(get-assertions)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
     - begin: '(\()\s*(get-proof)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
     - begin: '(\()\s*(get-unsat-core)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
     - begin: '(\()\s*(get-value)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
       - include: '#comments'
     - begin: '(\()\s*(get-assignment)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
     - begin: '(\()\s*(get-option)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#keywords'
       - include: '#comments'
     - begin: '(\()\s*(get-info)'
       beginCaptures:
-        '1': {name: keyword.tsv}
-        '2': {name: constant.numeric.tsv}
+        '1': {name: keyword.vmt}
+        '2': {name: constant.numeric.vmt}
       end: '(\))'
       endCaptures:
-        '1': {name: keyword.tsv}
+        '1': {name: keyword.vmt}
       patterns:
       - include: '#keywords'
       - include: '#comments'

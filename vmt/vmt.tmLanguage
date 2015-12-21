@@ -4,10 +4,10 @@
 <dict>
 	<key>fileTypes</key>
 	<array>
-		<string>tsv</string>
+		<string>vmt</string>
 	</array>
 	<key>name</key>
-	<string>TSV-LIB</string>
+	<string>VMT-LIB</string>
 	<key>patterns</key>
 	<array>
 		<dict>
@@ -33,12 +33,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -48,7 +48,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -75,12 +75,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -90,7 +90,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -117,12 +117,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -132,7 +132,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -151,12 +151,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -166,7 +166,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -197,12 +197,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -212,7 +212,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -235,12 +235,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -250,7 +250,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -273,12 +273,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -288,7 +288,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -311,12 +311,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -326,7 +326,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -349,12 +349,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -364,7 +364,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -387,12 +387,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -402,7 +402,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -425,12 +425,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -440,7 +440,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 				</dict>
@@ -452,12 +452,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -467,7 +467,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 				</dict>
@@ -479,12 +479,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -494,7 +494,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 				</dict>
@@ -506,12 +506,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -521,7 +521,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -548,12 +548,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -563,7 +563,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 				</dict>
@@ -575,12 +575,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -590,7 +590,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -613,12 +613,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.tsv</string>
+							<string>constant.numeric.vmt</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -628,7 +628,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.tsv</string>
+							<string>keyword.vmt</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -650,7 +650,7 @@
 			<key>match</key>
 			<string>;.*$</string>
 			<key>name</key>
-			<string>comment.tsv</string>
+			<string>comment.vmt</string>
 		</dict>
 		<key>consts</key>
 		<dict>
@@ -662,7 +662,7 @@
 					<key>match</key>
 					<string>\b(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)</string>
 					<key>name</key>
-					<string>constant.other.tsv</string>
+					<string>constant.other.vmt</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -674,7 +674,7 @@
 					<key>match</key>
 					<string>#x\h+</string>
 					<key>name</key>
-					<string>constant.other.tsv</string>
+					<string>constant.other.vmt</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -682,7 +682,7 @@
 					<key>match</key>
 					<string>#b(0|1)+</string>
 					<key>name</key>
-					<string>constant.other.tsv</string>
+					<string>constant.other.vmt</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -690,7 +690,7 @@
 					<key>match</key>
 					<string>\"(\\\"|[^\"])*\"</string>
 					<key>name</key>
-					<string>constant.other.tsv</string>
+					<string>constant.other.vmt</string>
 				</dict>
 			</array>
 		</dict>
@@ -704,7 +704,7 @@
 					<key>match</key>
 					<string>(\b(true|false|and|or|ite|not)\b)|((=&gt;|=)\s)</string>
 					<key>name</key>
-					<string>keyword.tsv</string>
+					<string>keyword.vmt</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -712,7 +712,7 @@
 					<key>match</key>
 					<string>[&lt;&gt;[&lt;=][&gt;=]\+\-\*/]\s</string>
 					<key>name</key>
-					<string>keyword.tsv</string>
+					<string>keyword.vmt</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -720,7 +720,7 @@
 					<key>match</key>
 					<string>\b(Bool|Int|Real)\b</string>
 					<key>name</key>
-					<string>support.type.tsv</string>
+					<string>support.type.vmt</string>
 				</dict>
 			</array>
 		</dict>
@@ -733,12 +733,12 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.tsv</string>
+					<string>keyword.vmt</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>constant.numeric.tsv</string>
+					<string>constant.numeric.vmt</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -750,7 +750,7 @@
 				<key>0</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.tsv</string>
+					<string>keyword.vmt</string>
 				</dict>
 			</dict>
 			<key>patterns</key>
@@ -767,7 +767,7 @@
 					<key>match</key>
 					<string>[^\s*\)]*</string>
 					<key>name</key>
-					<string>invalid.tsv</string>
+					<string>invalid.vmt</string>
 				</dict>
 			</array>
 		</dict>
@@ -776,14 +776,14 @@
 			<key>match</key>
 			<string>:[\w~!@\$%\^&amp;\*\-\+=&lt;&gt;\.\?/]+</string>
 			<key>name</key>
-			<string>keyword.tsv</string>
+			<string>keyword.vmt</string>
 		</dict>
 		<key>numerals</key>
 		<dict>
 			<key>match</key>
 			<string>\b(0|[1-9][0-9]*)\b</string>
 			<key>name</key>
-			<string>constant.other.tsv</string>
+			<string>constant.other.vmt</string>
 		</dict>
 		<key>quotedSymbols</key>
 		<dict>
@@ -794,7 +794,7 @@
 				<key>0</key>
 				<dict>
 					<key>name</key>
-					<string>constant.numeric.tsv</string>
+					<string>constant.numeric.vmt</string>
 				</dict>
 			</dict>
 			<key>end</key>
@@ -804,7 +804,7 @@
 				<key>0</key>
 				<dict>
 					<key>name</key>
-					<string>constant.numeric.tsv</string>
+					<string>constant.numeric.vmt</string>
 				</dict>
 			</dict>
 			<key>patterns</key>
@@ -815,7 +815,7 @@
 					<key>match</key>
 					<string>\\</string>
 					<key>name</key>
-					<string>invalid.tsv</string>
+					<string>invalid.vmt</string>
 				</dict>
 			</array>
 		</dict>
@@ -824,7 +824,7 @@
 			<key>match</key>
 			<string>\b(par|STRING|DECIMAL|NUMERAL|_|as|let|forall|exists)\b|!</string>
 			<key>name</key>
-			<string>constant.numeric.other.tsv</string>
+			<string>constant.numeric.other.vmt</string>
 		</dict>
 		<key>simpleSymbols</key>
 		<dict>
@@ -901,7 +901,7 @@
 							<key>match</key>
 							<string>[^\s\)]</string>
 							<key>name</key>
-							<string>invalid.tsv</string>
+							<string>invalid.vmt</string>
 						</dict>
 					</array>
 				</dict>
@@ -909,7 +909,7 @@
 		</dict>
 	</dict>
 	<key>scopeName</key>
-	<string>tsv</string>
+	<string>vmt</string>
 	<key>uuid</key>
 	<string>bc1d9256-66de-45e3-8be6-813b26a05a7c</string>
 </dict>
