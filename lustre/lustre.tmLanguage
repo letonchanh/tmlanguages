@@ -77,6 +77,10 @@
 					<key>include</key>
 					<string>#expression</string>
 				</dict>
+				<dict>
+					<key>include</key>
+					<string>#modeRef</string>
+				</dict>
 			</array>
 		</dict>
 		<key>blockContract</key>
@@ -185,6 +189,10 @@
 							<key>include</key>
 							<string>#blockAssGua</string>
 						</dict>
+						<dict>
+							<key>include</key>
+							<string>#blockImport</string>
+						</dict>
 					</array>
 				</dict>
 			</array>
@@ -227,6 +235,10 @@
 				<dict>
 					<key>include</key>
 					<string>#expression</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#modeRef</string>
 				</dict>
 			</array>
 		</dict>
@@ -286,7 +298,7 @@
 						</dict>
 						<dict>
 							<key>include</key>
-							<string>#blockStmt</string>
+							<string>#modeRef</string>
 						</dict>
 					</array>
 				</dict>
@@ -320,6 +332,10 @@
 					<key>include</key>
 					<string>#expression</string>
 				</dict>
+				<dict>
+					<key>include</key>
+					<string>#modeRef</string>
+				</dict>
 			</array>
 		</dict>
 		<key>blockVar</key>
@@ -351,6 +367,10 @@
 			</dict>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#modeRef</string>
+				</dict>
 				<dict>
 					<key>match</key>
 					<string>=</string>
@@ -415,6 +435,10 @@
 				<dict>
 					<key>include</key>
 					<string>#blockMode</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#blockImport</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -616,6 +640,10 @@
 				<dict>
 					<key>include</key>
 					<string>#expression</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#blockStmt</string>
 				</dict>
 			</array>
 		</dict>
@@ -1222,6 +1250,21 @@
 				</dict>
 			</array>
 		</dict>
+		<key>modeRef</key>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.numeric.lustre</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>::(\w+::)*(\w+)</string>
+			<key>name</key>
+			<string>constant.other.lustre</string>
+		</dict>
 		<key>nodePref</key>
 		<dict>
 			<key>begin</key>
@@ -1245,7 +1288,7 @@
 				</dict>
 			</dict>
 			<key>comment</key>
-			<string>More precisely, a node or a function prefix.</string>
+			<string>More precisely, a node, a contract node or a function prefix.</string>
 			<key>end</key>
 			<string>(\))</string>
 			<key>endCaptures</key>
