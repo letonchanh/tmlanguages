@@ -92,6 +92,7 @@ repository:
       patterns:
       - include: '#comment'
       - include: '#modeRef'
+      - include: '#blockStmt'
 
   blockAssGua:
     begin: '(assume|guarantee)'
@@ -370,7 +371,7 @@ repository:
     - include: '#comment'
     - comment: Keywords
       name: keyword.lustre
-      match: '\b(if|then|else|not|and|or|pre|fby|mod)\b'
+      match: '\b(if|then|else|not|and|xor|or|pre|fby|mod)\b'
     - comment: -> keyword (no \b delimiter)
       name: keyword.lustre
       match: '->'
