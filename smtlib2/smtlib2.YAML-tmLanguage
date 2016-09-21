@@ -292,6 +292,20 @@ repository:
       end: '(\))'
       endCaptures:
         '1': {name: keyword.smt2}
+    - begin: '(\()\s*(exit)'
+      beginCaptures:
+        '1': {name: keyword.smt2}
+        '2': {name: constant.numeric.smt2}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.smt2}
+    - begin: '(\()\s*(reset)'
+      beginCaptures:
+        '1': {name: keyword.smt2}
+        '2': {name: constant.numeric.smt2}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.smt2}
     - begin: '(\()\s*(get-unsat-core)'
       beginCaptures:
         '1': {name: keyword.smt2}
@@ -343,6 +357,15 @@ repository:
         '1': {name: keyword.smt2}
       patterns:
       - include: '#keywords'
+      - include: '#comments'
+    - begin: '(\()\s*(echo)'
+      beginCaptures:
+        '1': {name: keyword.smt2}
+        '2': {name: constant.numeric.smt2}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.smt2}
+      patterns:
       - include: '#comments'
 
 
