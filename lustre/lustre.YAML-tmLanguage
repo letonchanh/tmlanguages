@@ -372,6 +372,30 @@ repository:
     - comment: Keywords
       name: keyword.lustre
       match: '\b(if|then|else|not|and|xor|or|pre|fby|mod)\b'
+    - comment: Merge
+      begin: '(merge)\s*\('
+      beginCaptures:
+        '1': {name: keyword.lustre}
+        '2': {name: keyword.lustre}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.lustre}
+      patterns:
+      - name: constant.other.lustre
+        match: ';'
+      - begin: '(\(\s*activate)\s+(\w+)\s+(every)'
+        beginCaptures:
+          '1': {name: constant.language.source.lustre}
+          '2': {name: constant.other.lustre}
+          '3': {name: constant.language.source.lustre}
+        end: '(\))\s*(\()\w+\s*(,\s*\w+)*\s*(\))'
+        endCaptures:
+          '1': {name: constant.language.source.lustre}
+        patterns:
+        - include: '#expression'
+      - name: constant.language.source.lustre
+        match: 'when'
+      - include: '#expression'
     - comment: -> keyword (no \b delimiter)
       name: keyword.lustre
       match: '->'
