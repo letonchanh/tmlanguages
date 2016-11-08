@@ -223,6 +223,8 @@ repository:
   externAnnotation:
     comment: Annotations outside bodies.
     patterns:
+    - name: constant.other.lustre
+      match: 'extern'
     - include: '#blockContract'
     - include: '#ghostVar'
     - include: '#contractMode'
