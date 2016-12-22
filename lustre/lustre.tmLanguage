@@ -12,7 +12,7 @@
 	<array>
 		<dict>
 			<key>include</key>
-			<string>#externAnnotation</string>
+			<string>#blockContract</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -1091,36 +1091,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>externAnnotation</key>
-		<dict>
-			<key>comment</key>
-			<string>Annotations outside bodies.</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>extern</string>
-					<key>name</key>
-					<string>constant.other.lustre</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#blockContract</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#ghostVar</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#contractMode</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#contractStmt</string>
-				</dict>
-			</array>
-		</dict>
 		<key>floatCst</key>
 		<dict>
 			<key>match</key>
@@ -1365,7 +1335,7 @@
 		<key>nodePref</key>
 		<dict>
 			<key>begin</key>
-			<string>\b(node|function|contract)\s+(\w+)\s*\(</string>
+			<string>\b(node|function|contract)(\s+imported\s+|\s+)(\w+)\s*\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key>

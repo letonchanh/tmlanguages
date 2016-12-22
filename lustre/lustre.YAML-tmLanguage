@@ -15,7 +15,7 @@ fileTypes: [lus]
 uuid: 23a435f9-1904-4b91-99ee-7609e0e45879
 
 patterns:
-- include: '#externAnnotation'
+- include: '#blockContract'
 - include: '#comment'
 - include: '#include'
 - include: '#nodePref'
@@ -220,16 +220,6 @@ repository:
       patterns:
       - include: '#expression'
 
-  externAnnotation:
-    comment: Annotations outside bodies.
-    patterns:
-    - name: constant.other.lustre
-      match: 'extern'
-    - include: '#blockContract'
-    - include: '#ghostVar'
-    - include: '#contractMode'
-    - include: '#contractStmt'
-
   internAnnotation:
     comment: Annotations inside bodies.
     patterns:
@@ -292,7 +282,7 @@ repository:
 
   nodePref:
     comment: More precisely, a node, a contract node or a function prefix.
-    begin: '\b(node|function|contract)\s+(\w+)\s*\('
+    begin: '\b(node|function|contract)(\s+imported\s+|\s+)(\w+)\s*\('
     beginCaptures:
       '0': {name: constant.other.lustre}
       '1': {name: keyword.lustre}
