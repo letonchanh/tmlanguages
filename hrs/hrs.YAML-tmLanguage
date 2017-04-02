@@ -1,0 +1,111 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+
+# Oniguruma Regular Expressions:
+#   https://sonoisa.github.io/ogrekit/About_(English)_files/RE.txt
+
+# Sublime tuto:
+#   http://sublimetext.info/docs/en/extensibility/syntaxdefs.html
+
+# Prolog example:
+#   https://github.com/alnkpa/sublimeprolog/blob/master/support/Prolog.YAML-tmLanguage
+---
+name: Higher-order Recursion Schemes
+scopeName: source.hrs
+fileTypes: [hrs]
+uuid: 3ab0d734-018a-46ad-bfaf-1d585250efd2
+
+patterns:
+- include: '#comment'
+- include: '#gram'
+- include: '#auto'
+
+
+repository:
+
+  # Comments.
+  comment:
+    name: comment.lustre
+    begin: '/\*'
+    end: '\*/'
+
+  # Grammar.
+
+  nt_app:
+    begin: '\(([A-Z][a-zA-Z_0-9]*)'
+    beginCaptures:
+      '1': { name: keyword.lustre }
+    end: '\)'
+    patterns:
+    - include: '#nt_app'
+    - include: '#t_app'
+    - include: '#comment'
+
+  t_app:
+    begin: '\(([a-z][a-zA-Z_0-9]*)'
+    beginCaptures:
+      '1': { name: constant.numeric.lustre }
+    end: '\)'
+    patterns:
+    - include: '#nt_app'
+    - include: '#t_app'
+    - include: '#comment'
+
+  rule:
+    begin: '([A-Z][a-zA-Z_0-9]*)((\s+[a-z][a-zA-Z_0-9]*)*)'
+    beginCaptures:
+      '1': { name: keyword.lustre }
+    end: '\.'
+    endCaptures:
+      '0': { name: keyword.lustre }
+    patterns:
+    - match: '(->)\s*([A-Z][a-zA-Z_0-9]*)'
+      captures:
+        '1': { name: support.type.lustre }
+        '2': { name: keyword.lustre }
+    - match: '(->)\s*([a-z][a-zA-Z_0-9]*)'
+      captures:
+        '1': { name: support.type.lustre }
+        '2': { name: constant.numeric.lustre }
+    - match: '(->)'
+      captures:
+        '1': { name: support.type.lustre }
+    - include: '#nt_app'
+    - include: '#t_app'
+    - include: '#comment'
+
+  gram:
+    begin: '(%BEGING)'
+    beginCaptures:
+      '1': { name: support.type.lustre }
+    end: '(%ENDG)'
+    endCaptures:
+      '1': { name: support.type.lustre }
+    patterns:
+    - include: '#rule'
+    - include: '#comment'
+
+  # Automaton.
+
+  state:
+    begin: '([a-z][a-zA-Z_0-9]*)(\s+[a-z][a-zA-Z_0-9]*)\s*(->)'
+    beginCaptures:
+      '1': { name: keyword.lustre }
+      '3': { name: support.type.lustre }
+    end: '\.'
+    endCaptures:
+      '0': { name: keyword.lustre }
+    patterns:
+    - include: '#comment'
+    - match: 'nil'
+      name: constant.numeric.lustre
+
+  auto:
+    begin: '(%BEGINA)'
+    beginCaptures:
+      '1': { name: support.type.lustre }
+    end: '(%ENDA)'
+    endCaptures:
+      '1': { name: support.type.lustre }
+    patterns:
+    - include: '#comment'
+    - include: '#state'

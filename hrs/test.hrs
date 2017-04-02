@@ -1,0 +1,14 @@
+/* Blah */
+
+%BEGING /* Blah */
+
+  S -> F /* Blah */ c .
+  F x -> (a x) (F (b x)) .
+
+%ENDG
+/* Blah */
+%BEGINA
+
+  q0 a -> q1 nil /* Blah */ .
+/* Blah */
+%ENDA
