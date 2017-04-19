@@ -161,7 +161,6 @@ repository:
       - name: invalid.smt2
         match: '[^\s\)]'
 
-
   commands:
     patterns:
     - begin: '(\()\s*(set-logic)'
@@ -321,9 +320,10 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
-      - include: '#simpleSymbols'
-      - include: '#quotedSymbols'
-      - include: '#comments'
+      - include: '#terms'
+      # - include: '#simpleSymbols'
+      # - include: '#quotedSymbols'
+      # - include: '#comments'
     - begin: '(\()\s*(get-assignment)'
       beginCaptures:
         '1': {name: keyword.smt2}
