@@ -216,7 +216,7 @@ repository:
       patterns:
       - include: '#comments'
       - include: '#terms'
-    - begin: '(\()\s*(declare-fun)'
+    - begin: '(\()\s*(declare-fun|declare-const)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}
@@ -226,7 +226,7 @@ repository:
       patterns:
       - include: '#comments'
       - include: '#terms'
-    - begin: '(\()\s*(define-fun)'
+    - begin: '(\()\s*(define-fun|define_cons)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}
