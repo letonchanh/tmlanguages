@@ -226,7 +226,17 @@ repository:
       patterns:
       - include: '#comments'
       - include: '#terms'
-    - begin: '(\()\s*(define-fun|define_cons)'
+    - begin: '(\()\s*(define-fun-rec|define-funs-rec|define-fun|define_cons)'
+      beginCaptures:
+        '1': {name: keyword.smt2}
+        '2': {name: constant.numeric.smt2}
+      end: '(\))'
+      endCaptures:
+        '1': {name: keyword.smt2}
+      patterns:
+      - include: '#terms'
+      - include: '#comments'
+    - begin: '(\()\s*(declare-datatypes)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}

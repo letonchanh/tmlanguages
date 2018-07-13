@@ -267,7 +267,45 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>(\()\s*(define-fun|define_cons)</string>
+					<string>(\()\s*(define-fun-rec|define-funs-rec|define-fun|define_cons)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.smt2</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>constant.numeric.smt2</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.smt2</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#terms</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#comments</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(\()\s*(declare-datatypes)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
