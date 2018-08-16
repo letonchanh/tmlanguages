@@ -66,7 +66,7 @@ repository:
       match: '(\b(true|false|and|or|ite|not)\b)|((=>|=)\s)'
     - comment: Arithmetic.
       name: keyword.smt2
-      match: '[<>[<=][>=]\+\-\*/]\s'
+      match: '[[<=][>=]<>\+\-\*/]\s'
     - comment: Pritive types.
       name: support.type.smt2
       match: '\b(Bool|Int|Real)\b'
@@ -266,7 +266,7 @@ repository:
       patterns:
       - include: '#numerals'
       - include: '#comments'
-    - begin: '(\()\s*(assert)'
+    - begin: '(\()\s*(assert|eval)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}
@@ -276,7 +276,7 @@ repository:
       patterns:
       - include: '#terms'
       - include: '#comments'
-    - begin: '(\()\s*(check-sat)'
+    - begin: '(\()\s*(check-sat-assuming|check-sat)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}
@@ -284,8 +284,7 @@ repository:
       endCaptures:
         '1': {name: keyword.smt2}
       patterns:
-      - include: '#simpleSymbols'
-      - include: '#quotedSymbols'
+      - include: '#terms'
       - include: '#comments'
     - begin: '(\()\s*(get-assertions)'
       beginCaptures:
