@@ -37,7 +37,7 @@ repository:
 
   reserved:
     name: 'constant.numeric.other.smt2'
-    match: '\b(par|STRING|DECIMAL|NUMERAL|_|as|let|forall|exists)\b|!'
+    match: '\b(par|STRING|DECIMAL|NUMERAL|_|as|let|forall|exists|is)\b|!'
 
   numerals:
     name: constant.other.smt2
@@ -124,12 +124,10 @@ repository:
     endCaptures:
       '1': {name: constant.other.smt2}
       '4': {name: keyword.smt2}
-      '5': {name: invalid.smt2}
+      '5': {name: keyword.smt2}
     patterns:
       - include: '#simpleSymbols'
       - include: '#quotedSymbols'
-      - name: invalid.smt2
-        match: '[^\s\)]*'
 
   # sorts:
   #   patterns:
@@ -226,7 +224,7 @@ repository:
       patterns:
       - include: '#comments'
       - include: '#terms'
-    - begin: '(\()\s*(define-fun-rec|define-funs-rec|define-fun|define_cons)'
+    - begin: '(\()\s*(define-fun-rec|define-funs-rec|define-fun|define-cons)'
       beginCaptures:
         '1': {name: keyword.smt2}
         '2': {name: constant.numeric.smt2}
